@@ -235,7 +235,7 @@ export function App() {
           const updated = { ...s };
 
           if (field === 'name') {
-            updated.name = String(val).slice(0, 40); // 40 char limit for course names
+            updated.name = String(val).slice(0, 40);
           }
           if (field === 'held') {
             const parsed = typeof val === 'number' ? val : parseInt(String(val).replace(/\D/g, '').slice(0, 3), 10) || 1;
@@ -320,16 +320,16 @@ export function App() {
           : 'bg-[#f8fafc] text-[#0f172a] bg-notebook-light'
       }`}
     >
-      <div className="w-full max-w-[500px] flex flex-col gap-3 sm:gap-4">
+      <div className="w-full max-w-[500px] flex flex-col gap-3.5 sm:gap-4">
         
-        {/* TOP BRAND NAV BAR - COMPACT ON MOBILE */}
+        {/* TOP BRAND NAV BAR */}
         <header className="anim-item flex items-center justify-between px-1">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <div
-              className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl flex items-center justify-center font-brand font-black text-base sm:text-lg border ${
+              className={`w-9 h-9 rounded-2xl flex items-center justify-center font-brand font-black text-lg ${
                 isDark
-                  ? 'bg-[#ff5722] text-white border-[#ff784e] neo-box-sm-dark'
-                  : 'bg-[#ff5722] text-white border-[#0f172a] neo-box-sm-light'
+                  ? 'bg-[#ff5722] text-white apple-button-dark'
+                  : 'bg-[#ff5722] text-white apple-button-light'
               }`}
             >
               b
@@ -344,22 +344,20 @@ export function App() {
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            {/* THEME SELECTOR */}
+          <div className="flex items-center gap-2">
+            {/* THEME SELECTOR - REALISTIC BEVEL */}
             <div
-              className={`flex p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border ${
-                isDark
-                  ? 'bg-[#111722] border-[#1d2738] neo-box-sm-dark'
-                  : 'bg-white border-[#0f172a] neo-box-sm-light'
+              className={`flex p-1 rounded-2xl ${
+                isDark ? 'apple-inset-dark' : 'apple-inset-light'
               }`}
             >
               <button
                 type="button"
                 onClick={() => applyTheme('light')}
                 title="Light mode"
-                className={`p-1.5 rounded-lg sm:rounded-xl transition-all ${
+                className={`p-1.5 rounded-xl transition-all ${
                   theme === 'light'
-                    ? 'bg-[#ff5722] text-white shadow-xs'
+                    ? 'bg-[#ff5722] text-white apple-button-light'
                     : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
@@ -369,9 +367,9 @@ export function App() {
                 type="button"
                 onClick={() => applyTheme('dark')}
                 title="Dark mode"
-                className={`p-1.5 rounded-lg sm:rounded-xl transition-all ${
+                className={`p-1.5 rounded-xl transition-all ${
                   theme === 'dark'
-                    ? 'bg-[#ff5722] text-white shadow-xs'
+                    ? 'bg-[#ff5722] text-white apple-button-dark'
                     : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
@@ -381,9 +379,9 @@ export function App() {
                 type="button"
                 onClick={() => applyTheme('system')}
                 title="System preference"
-                className={`p-1.5 rounded-lg sm:rounded-xl transition-all ${
+                className={`p-1.5 rounded-xl transition-all ${
                   theme === 'system'
-                    ? 'bg-[#ff5722] text-white shadow-xs'
+                    ? 'bg-[#ff5722] text-white apple-button-dark'
                     : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
@@ -395,10 +393,10 @@ export function App() {
             <select
               value={lang}
               onChange={e => setLang(e.target.value)}
-              className={`text-xs font-mono font-bold px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl sm:rounded-2xl border outline-none cursor-pointer transition-colors ${
+              className={`text-xs font-mono font-bold px-3 py-1.5 sm:py-2 rounded-2xl outline-none cursor-pointer transition-colors ${
                 isDark
-                  ? 'bg-[#111722] border-[#1d2738] text-[#f8fafc] hover:border-[#384863] neo-box-sm-dark'
-                  : 'bg-white border-[#0f172a] text-[#0f172a] neo-box-sm-light'
+                  ? 'apple-card-dark text-[#f8fafc] hover:border-white/20'
+                  : 'apple-card-light text-[#0f172a]'
               }`}
             >
               <option value="en">EN</option>
@@ -415,12 +413,10 @@ export function App() {
           </div>
         </header>
 
-        {/* TABS SELECTOR */}
+        {/* TABS SELECTOR - APPLE SEGMENTED CONTROL */}
         <div
-          className={`anim-item flex p-1 rounded-2xl border ${
-            isDark
-              ? 'bg-[#111722] border-[#1d2738] neo-box-sm-dark'
-              : 'bg-white border-[#0f172a] neo-box-sm-light'
+          className={`anim-item flex p-1 rounded-2xl ${
+            isDark ? 'apple-inset-dark' : 'apple-inset-light'
           }`}
         >
           <button
@@ -429,8 +425,8 @@ export function App() {
             className={`flex-1 py-2 sm:py-2.5 rounded-xl font-brand font-black text-xs uppercase tracking-wider transition-all ${
               tab === 'calc'
                 ? isDark
-                  ? 'bg-[#ff5722] text-white shadow-xs'
-                  : 'bg-[#0f172a] text-white shadow-xs'
+                  ? 'bg-[#ff5722] text-white apple-button-dark'
+                  : 'bg-[#0f172a] text-white shadow-sm'
                 : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
             }`}
           >
@@ -442,8 +438,8 @@ export function App() {
             className={`flex-1 py-2 sm:py-2.5 rounded-xl font-brand font-black text-xs uppercase tracking-wider transition-all ${
               tab === 'roster'
                 ? isDark
-                  ? 'bg-[#ff5722] text-white shadow-xs'
-                  : 'bg-[#0f172a] text-white shadow-xs'
+                  ? 'bg-[#ff5722] text-white apple-button-dark'
+                  : 'bg-[#0f172a] text-white shadow-sm'
                 : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
             }`}
           >
@@ -453,30 +449,26 @@ export function App() {
 
         {/* TAB 1: QUICK CUSHION */}
         {tab === 'calc' && (
-          <div className="flex flex-col gap-3 sm:gap-4">
+          <div className="flex flex-col gap-3.5 sm:gap-4">
             
-            {/* HERO OUTCOME BANNER */}
+            {/* HERO OUTCOME BANNER - REALISTIC SPECULAR HIGHLIGHTS */}
             <section
-              className={`anim-item p-5 sm:p-7 rounded-2xl sm:rounded-3xl border-2 transition-all relative overflow-hidden ${
+              className={`anim-item p-5 sm:p-7 rounded-3xl transition-all relative overflow-hidden ${
                 isDark
-                  ? isSafe
-                    ? 'bg-[#062417] border-[#10b981] text-[#f8fafc] neo-box-dark'
-                    : 'bg-[#2e0b12] border-[#f43f5e] text-[#f8fafc] neo-box-dark'
-                  : isSafe
-                    ? 'bg-[#dcfce7] border-[#0f172a] text-[#0f172a] neo-box-light'
-                    : 'bg-[#ffe4e6] border-[#0f172a] text-[#0f172a] neo-box-light'
+                  ? isSafe ? 'hero-safe-dark text-[#f8fafc]' : 'hero-danger-dark text-[#f8fafc]'
+                  : isSafe ? 'hero-safe-light text-[#064e3b]' : 'hero-danger-light text-[#881337]'
               }`}
             >
               <div className="flex items-center justify-between mb-2 sm:mb-3">
                 <div
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono font-black border ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-black border ${
                     isSafe
                       ? isDark
                         ? 'bg-[#10b981]/25 text-[#34d399] border-[#10b981]/60'
-                        : 'bg-[#10b981] text-white border-[#0f172a]'
+                        : 'bg-[#10b981] text-white border-[#059669]'
                       : isDark
                         ? 'bg-[#f43f5e]/25 text-[#fb7185] border-[#f43f5e]/60'
-                        : 'bg-[#f43f5e] text-white border-[#0f172a]'
+                        : 'bg-[#f43f5e] text-white border-[#e11d48]'
                   }`}
                 >
                   {isSafe ? <Sparkles size={12} /> : <AlertCircle size={12} />}
@@ -484,10 +476,10 @@ export function App() {
                 </div>
 
                 <div
-                  className={`font-mono font-black text-[11px] sm:text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg border ${
+                  className={`font-mono font-black text-[11px] sm:text-xs px-2.5 py-1 rounded-lg border ${
                     isDark
                       ? 'bg-[#080b10]/70 text-[#cbd5e1] border-white/10'
-                      : 'bg-black/10 text-[#0f172a] border-[#0f172a]/20'
+                      : 'bg-white/70 text-[#0f172a] border-black/10'
                   }`}
                 >
                   {currentPct.toFixed(1)}% / {safeThreshold}% req
@@ -529,12 +521,10 @@ export function App() {
                     Current: {currentPct.toFixed(1)}%
                   </span>
                 </div>
-                <div className="w-full h-2 sm:h-2.5 rounded-full bg-black/10 dark:bg-black/50 overflow-hidden relative">
+                <div className="w-full h-2 sm:h-2.5 rounded-full bg-black/10 dark:bg-black/50 overflow-hidden relative shadow-inner">
                   <div
                     className={`h-full transition-all duration-300 rounded-full ${
-                      isSafe
-                        ? 'bg-[#10b981]'
-                        : 'bg-[#f43f5e]'
+                      isSafe ? 'bg-[#10b981]' : 'bg-[#f43f5e]'
                     }`}
                     style={{ width: `${Math.min(100, Math.max(0, currentPct))}%` }}
                   />
@@ -542,12 +532,10 @@ export function App() {
               </div>
             </section>
 
-            {/* CONTROLS CARD */}
+            {/* CONTROLS CARD - APPLE CARD DEPTH */}
             <section
-              className={`anim-item p-4 sm:p-5 rounded-2xl sm:rounded-3xl border flex flex-col gap-3.5 sm:gap-4 ${
-                isDark
-                  ? 'bg-[#111722] border-[#1d2738] neo-box-dark'
-                  : 'bg-white border-[#0f172a] neo-box-light'
+              className={`anim-item p-4 sm:p-5 rounded-3xl flex flex-col gap-3.5 sm:gap-4 ${
+                isDark ? 'apple-card-dark' : 'apple-card-light'
               }`}
             >
               {/* TWO HYBRID (STEPPER + DIRECT TYPEABLE) NUMBER CONTROLLERS */}
@@ -555,10 +543,8 @@ export function App() {
                 
                 {/* CLASSES HELD */}
                 <div
-                  className={`p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border flex flex-col gap-1.5 sm:gap-2 ${
-                    isDark
-                      ? 'bg-[#18202e] border-[#243044]'
-                      : 'bg-[#f1f5f9] border-[#cbd5e1]'
+                  className={`p-3 sm:p-3.5 rounded-2xl flex flex-col gap-1.5 sm:gap-2 ${
+                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
                   }`}
                 >
                   <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -569,16 +555,15 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleHeldStep(-1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
-                          ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
-                          : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
+                          ? 'bg-[#111722] text-white hover:bg-[#ff5722] apple-button-dark'
+                          : 'bg-white text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-xs'
                       }`}
                     >
                       <Minus size={14} />
                     </button>
                     
-                    {/* Direct typeable input with 3-digit length limit (1-999) */}
                     <input
                       type="text"
                       inputMode="numeric"
@@ -594,10 +579,10 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleHeldStep(1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
-                          ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
-                          : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
+                          ? 'bg-[#111722] text-white hover:bg-[#ff5722] apple-button-dark'
+                          : 'bg-white text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-xs'
                       }`}
                     >
                       <Plus size={14} />
@@ -607,10 +592,8 @@ export function App() {
 
                 {/* CLASSES ATTENDED */}
                 <div
-                  className={`p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border flex flex-col gap-1.5 sm:gap-2 ${
-                    isDark
-                      ? 'bg-[#18202e] border-[#243044]'
-                      : 'bg-[#f1f5f9] border-[#cbd5e1]'
+                  className={`p-3 sm:p-3.5 rounded-2xl flex flex-col gap-1.5 sm:gap-2 ${
+                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
                   }`}
                 >
                   <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -621,16 +604,15 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleAttendedStep(-1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
-                          ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
-                          : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
+                          ? 'bg-[#111722] text-white hover:bg-[#ff5722] apple-button-dark'
+                          : 'bg-white text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-xs'
                       }`}
                     >
                       <Minus size={14} />
                     </button>
                     
-                    {/* Direct typeable input with 3-digit length limit (0-999) */}
                     <input
                       type="text"
                       inputMode="numeric"
@@ -646,10 +628,10 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleAttendedStep(1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
-                          ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
-                          : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
+                          ? 'bg-[#111722] text-white hover:bg-[#ff5722] apple-button-dark'
+                          : 'bg-white text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-xs'
                       }`}
                     >
                       <Plus size={14} />
@@ -661,10 +643,8 @@ export function App() {
 
               {/* REFINED TACTILE THRESHOLD SLIDER */}
               <div
-                className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border flex flex-col gap-2.5 sm:gap-3.5 ${
-                  isDark
-                    ? 'bg-[#18202e] border-[#243044]'
-                    : 'bg-[#f1f5f9] border-[#cbd5e1]'
+                className={`p-3.5 sm:p-4 rounded-2xl flex flex-col gap-2.5 sm:gap-3.5 ${
+                  isDark ? 'apple-inset-dark' : 'apple-inset-light'
                 }`}
               >
                 <div className="flex justify-between items-center">
@@ -705,12 +685,12 @@ export function App() {
                         setThreshold(p);
                         setSimDiff(null);
                       }}
-                      className={`flex-1 py-1.5 sm:py-2 text-xs font-mono font-black rounded-lg sm:rounded-xl border transition-all active:scale-95 ${
+                      className={`flex-1 py-1.5 sm:py-2 text-xs font-mono font-black rounded-xl transition-all active:scale-95 ${
                         safeThreshold === p
-                          ? 'bg-[#ff5722] text-white border-[#ff5722] shadow-sm'
+                          ? 'bg-[#ff5722] text-white apple-button-dark'
                           : isDark
-                            ? 'bg-[#111722] text-[#cbd5e1] border-[#2b3950] hover:text-white hover:border-[#ff5722]'
-                            : 'bg-white text-[#1e293b] border-[#0f172a] hover:bg-[#ff5722] hover:text-white'
+                            ? 'bg-[#111722] text-[#cbd5e1] hover:text-white hover:bg-[#18202e] border border-white/5'
+                            : 'bg-white text-[#1e293b] hover:bg-[#ff5722] hover:text-white shadow-2xs'
                       }`}
                     >
                       {p}%
@@ -722,8 +702,8 @@ export function App() {
               {/* THREE SUMMARY CHIPS WITH HIGH CONTRAST */}
               <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                 <div
-                  className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border text-center ${
-                    isDark ? 'bg-[#18202e] border-[#243044]' : 'bg-[#f1f5f9] border-[#cbd5e1]'
+                  className={`p-2.5 sm:p-3 rounded-2xl text-center ${
+                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
                   }`}
                 >
                   <div className={`text-[9px] sm:text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -735,8 +715,8 @@ export function App() {
                 </div>
 
                 <div
-                  className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border text-center ${
-                    isDark ? 'bg-[#18202e] border-[#243044]' : 'bg-[#f1f5f9] border-[#cbd5e1]'
+                  className={`p-2.5 sm:p-3 rounded-2xl text-center ${
+                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
                   }`}
                 >
                   <div className={`text-[9px] sm:text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -748,8 +728,8 @@ export function App() {
                 </div>
 
                 <div
-                  className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border text-center ${
-                    isDark ? 'bg-[#18202e] border-[#243044]' : 'bg-[#f1f5f9] border-[#cbd5e1]'
+                  className={`p-2.5 sm:p-3 rounded-2xl text-center ${
+                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
                   }`}
                 >
                   <div className={`text-[9px] sm:text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -770,10 +750,8 @@ export function App() {
 
             {/* WHAT-IF SIMULATOR DECK */}
             <section
-              className={`anim-item p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border flex flex-col gap-2.5 sm:gap-3 ${
-                isDark
-                  ? 'bg-[#111722] border-[#1d2738] neo-box-dark'
-                  : 'bg-white border-[#0f172a] neo-box-light'
+              className={`anim-item p-3.5 sm:p-5 rounded-3xl flex flex-col gap-2.5 sm:gap-3 ${
+                isDark ? 'apple-card-dark' : 'apple-card-light'
               }`}
             >
               <div className="flex justify-between items-center text-xs font-brand font-black uppercase">
@@ -785,10 +763,10 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => simulateImpact('miss')}
-                  className={`py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl border text-xs font-bold font-mono transition-all active:scale-95 ${
+                  className={`py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl text-xs font-bold font-mono transition-all active:scale-95 ${
                     isDark
-                      ? 'bg-[#18202e] border-[#243044] text-[#f8fafc] hover:border-[#ff5722]'
-                      : 'bg-[#f1f5f9] border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
+                      ? 'apple-inset-dark text-[#f8fafc] hover:border-[#ff5722]'
+                      : 'apple-inset-light text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
                   }`}
                 >
                   {t.simMiss}
@@ -796,10 +774,10 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => simulateImpact('attend')}
-                  className={`py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl border text-xs font-bold font-mono transition-all active:scale-95 ${
+                  className={`py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl text-xs font-bold font-mono transition-all active:scale-95 ${
                     isDark
-                      ? 'bg-[#18202e] border-[#243044] text-[#f8fafc] hover:border-[#10b981]'
-                      : 'bg-[#f1f5f9] border-[#0f172a] text-[#0f172a] hover:bg-[#10b981] hover:text-white'
+                      ? 'apple-inset-dark text-[#f8fafc] hover:border-[#10b981]'
+                      : 'apple-inset-light text-[#0f172a] hover:bg-[#10b981] hover:text-white'
                   }`}
                 >
                   {t.simAttend}
@@ -807,10 +785,8 @@ export function App() {
               </div>
 
               <div
-                className={`px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border text-xs flex items-center justify-between ${
-                  isDark
-                    ? 'bg-[#080b10] border-[#1d2738]'
-                    : 'bg-[#f8fafc] border-[#cbd5e1]'
+                className={`px-3 py-2.5 sm:px-4 sm:py-3 rounded-2xl text-xs flex items-center justify-between ${
+                  isDark ? 'apple-inset-dark' : 'apple-inset-light'
                 }`}
               >
                 <span className={`font-semibold text-[11px] sm:text-xs ${isDark ? 'text-[#cbd5e1]' : 'text-[#334155]'}`}>
@@ -836,10 +812,8 @@ export function App() {
         {/* TAB 2: COURSE ROSTER */}
         {tab === 'roster' && (
           <section
-            className={`p-4 sm:p-5 rounded-2xl sm:rounded-3xl border flex flex-col gap-3.5 sm:gap-4 ${
-              isDark
-                ? 'bg-[#111722] border-[#1d2738] neo-box-dark'
-                : 'bg-white border-[#0f172a] neo-box-light'
+            className={`p-4 sm:p-5 rounded-3xl flex flex-col gap-3.5 sm:gap-4 ${
+              isDark ? 'apple-card-dark' : 'apple-card-light'
             }`}
           >
             <div className="flex justify-between items-center pb-2 border-b border-dashed border-[#2b3950]">
@@ -869,10 +843,8 @@ export function App() {
                 return (
                   <div
                     key={s.id}
-                    className={`p-3.5 rounded-xl sm:rounded-2xl border flex flex-col gap-3 ${
-                      isDark
-                        ? 'bg-[#18202e] border-[#243044]'
-                        : 'bg-[#f1f5f9] border-[#cbd5e1]'
+                    className={`p-3.5 rounded-2xl flex flex-col gap-3 ${
+                      isDark ? 'apple-inset-dark' : 'apple-inset-light'
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -882,10 +854,10 @@ export function App() {
                         value={s.name}
                         placeholder="Subject name"
                         onChange={e => updateSubject(s.id, 'name', e.target.value)}
-                        className={`flex-1 text-xs font-bold px-3 py-1.5 sm:py-2 rounded-xl border outline-none ${
+                        className={`flex-1 text-xs font-bold px-3 py-1.5 sm:py-2 rounded-xl outline-none ${
                           isDark
-                            ? 'bg-[#111722] border-[#243044] text-white focus:border-[#ff5722]'
-                            : 'bg-white border-[#0f172a] text-[#0f172a]'
+                            ? 'bg-[#111722] text-white focus:ring-1 focus:ring-[#ff5722]'
+                            : 'bg-white text-[#0f172a] shadow-2xs'
                         }`}
                       />
                       <button
@@ -897,7 +869,7 @@ export function App() {
                       </button>
                     </div>
 
-                    {/* TACTILE + DIRECT TYPEABLE COUNTER CELLS WITH STRICT LIMITS */}
+                    {/* TACTILE + DIRECT TYPEABLE COUNTER CELLS */}
                     <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                       
                       {/* HELD COUNTER */}
@@ -906,10 +878,8 @@ export function App() {
                           Held
                         </span>
                         <div
-                          className={`flex items-center justify-between rounded-xl border p-0.5 sm:p-1 ${
-                            isDark
-                              ? 'bg-[#111722] border-[#243044]'
-                              : 'bg-white border-[#0f172a]'
+                          className={`flex items-center justify-between rounded-xl p-0.5 sm:p-1 ${
+                            isDark ? 'bg-[#111722]' : 'bg-white shadow-2xs'
                           }`}
                         >
                           <button
@@ -944,10 +914,8 @@ export function App() {
                           Attended
                         </span>
                         <div
-                          className={`flex items-center justify-between rounded-xl border p-0.5 sm:p-1 ${
-                            isDark
-                              ? 'bg-[#111722] border-[#243044]'
-                              : 'bg-white border-[#0f172a]'
+                          className={`flex items-center justify-between rounded-xl p-0.5 sm:p-1 ${
+                            isDark ? 'bg-[#111722]' : 'bg-white shadow-2xs'
                           }`}
                         >
                           <button
@@ -982,10 +950,8 @@ export function App() {
                           Target %
                         </span>
                         <div
-                          className={`flex items-center justify-between rounded-xl border p-0.5 sm:p-1 ${
-                            isDark
-                              ? 'bg-[#111722] border-[#243044]'
-                              : 'bg-white border-[#0f172a]'
+                          className={`flex items-center justify-between rounded-xl p-0.5 sm:p-1 ${
+                            isDark ? 'bg-[#111722]' : 'bg-white shadow-2xs'
                           }`}
                         >
                           <button
@@ -1010,7 +976,7 @@ export function App() {
 
                     </div>
 
-                    <div className="flex justify-between items-center pt-2 border-t border-dashed border-[#243044] text-xs">
+                    <div className="flex justify-between items-center pt-2 border-t border-dashed border-[#243044]/40 text-xs">
                       <span className="font-mono font-black">{sPct.toFixed(1)}%</span>
                       <span
                         className={`font-mono font-bold ${
@@ -1032,7 +998,7 @@ export function App() {
             <button
               type="button"
               onClick={addSubject}
-              className={`w-full py-2.5 sm:py-3 rounded-xl sm:rounded-2xl border-2 border-dashed font-brand font-black text-xs uppercase tracking-wider transition-all active:scale-[0.98] ${
+              className={`w-full py-2.5 sm:py-3 rounded-2xl border-2 border-dashed font-brand font-black text-xs uppercase tracking-wider transition-all active:scale-[0.98] ${
                 isDark
                   ? 'border-[#ff5722] text-[#ff5722] hover:bg-[#ff5722]/10'
                   : 'border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white hover:border-[#ff5722]'
@@ -1043,15 +1009,15 @@ export function App() {
           </section>
         )}
 
-        {/* BOTTOM ACTION BAR */}
+        {/* BOTTOM ACTION BAR - REALISTIC SHADOWS */}
         <div className="anim-item flex gap-2">
           <button
             type="button"
             onClick={resetAll}
-            className={`py-2.5 px-3 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl border font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 active:scale-95 ${
+            className={`py-2.5 px-3 sm:py-3 sm:px-4 rounded-2xl font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 active:scale-95 ${
               isDark
-                ? 'bg-[#111722] border-[#1d2738] text-[#cbd5e1] hover:text-white'
-                : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#f1f5f9]'
+                ? 'apple-card-dark text-[#cbd5e1] hover:text-white'
+                : 'apple-card-light text-[#0f172a] hover:bg-[#f1f5f9]'
             }`}
           >
             <RotateCcw size={13} />
@@ -1060,10 +1026,10 @@ export function App() {
           <button
             type="button"
             onClick={copySnapshot}
-            className={`flex-1 py-2.5 px-3 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl border font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:scale-95 ${
+            className={`flex-1 py-2.5 px-3 sm:py-3 sm:px-4 rounded-2xl font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:scale-95 ${
               isDark
-                ? 'bg-[#ff5722] border-[#ff784e] text-white neo-box-dark'
-                : 'bg-[#ff5722] border-[#0f172a] text-white neo-box-sm-light'
+                ? 'bg-[#ff5722] text-white apple-button-dark'
+                : 'bg-[#ff5722] text-white apple-button-light'
             }`}
           >
             {copied ? <Check size={13} /> : <Copy size={13} />}
@@ -1071,7 +1037,7 @@ export function App() {
           </button>
         </div>
 
-        {/* DESKTOP/MOBILE FOOTER */}
+        {/* FOOTER */}
         <footer className="anim-item flex items-center justify-between text-[10px] sm:text-[11px] font-mono px-2 pt-1">
           <div className="flex items-center gap-1.5">
             <ShieldCheck size={12} className="text-[#10b981]" />
@@ -1088,10 +1054,10 @@ export function App() {
       {/* FLOATING TOAST */}
       {toastMsg && (
         <div
-          className={`fixed bottom-6 left-1/2 -translate-x-1/2 font-mono font-bold text-xs px-5 py-2.5 rounded-2xl shadow-xl z-50 border ${
+          className={`fixed bottom-6 left-1/2 -translate-x-1/2 font-mono font-bold text-xs px-5 py-2.5 rounded-2xl shadow-2xl z-50 ${
             isDark
-              ? 'bg-[#18202e] text-white border-[#ff5722] neo-box-dark'
-              : 'bg-white text-[#0f172a] border-[#0f172a] neo-box-light'
+              ? 'bg-[#18202e] text-white border border-[#ff5722] apple-button-dark'
+              : 'bg-white text-[#0f172a] border border-black/10 apple-card-light'
           }`}
         >
           {toastMsg}
