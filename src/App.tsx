@@ -1,11 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { translations, type Translation } from './translations';
 import { Plus, Minus, Trash2, Sun, Moon, Laptop, Copy, Check, Sparkles, AlertCircle, RotateCcw, ShieldCheck, Zap } from 'lucide-react';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { animate, stagger, remove } from 'animejs';
 import confetti from 'canvas-confetti';
-
-gsap.registerPlugin(useGSAP);
 
 interface Subject {
   id: number;
@@ -18,6 +15,7 @@ interface Subject {
 export function App() {
   const containerRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLSpanElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
   const isInitialMount = useRef<boolean>(true);
 
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('dark');
@@ -100,30 +98,44 @@ export function App() {
     ? Math.max(0, Math.ceil((thresholdRatio * safeHeld - safeAttended) / (1 - thresholdRatio)))
     : 0;
 
-  // Safe GSAP Page Entrance
-  useGSAP(() => {
-    gsap.fromTo(
-      '.anim-item',
-      { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', clearProps: 'all' }
-    );
-  }, { scope: containerRef });
+  // Anime.js Staggered Entrance Animation on Mount
+  useEffect(() => {
+    animate('.anim-item', {
+      opacity: [0, 1],
+      translateY: [16, 0],
+      delay: stagger(60, { start: 50 }),
+      duration: 500,
+      ease: 'outQuint',
+    });
+  }, []);
 
-  // Number bump animation on subsequent user value changes
+  // Anime.js Elastic Spring on Number Update
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
       return;
     }
     if (numberRef.current) {
-      gsap.killTweensOf(numberRef.current);
-      gsap.fromTo(
-        numberRef.current,
-        { scale: 1.25, y: -4 },
-        { scale: 1, y: 0, duration: 0.28, ease: 'back.out(2)', clearProps: 'all' }
-      );
+      remove(numberRef.current);
+      animate(numberRef.current, {
+        scale: [1.28, 1],
+        translateY: [-4, 0],
+        duration: 450,
+        ease: 'outElastic(1, .5)',
+      });
     }
   }, [maxBunk, neededClasses, isSafe]);
+
+  // Anime.js Smooth Progress Gauge Bar Fill
+  useEffect(() => {
+    if (progressBarRef.current) {
+      animate(progressBarRef.current, {
+        width: `${Math.min(100, Math.max(0, currentPct))}%`,
+        duration: 400,
+        ease: 'outCubic',
+      });
+    }
+  }, [currentPct]);
 
   const handleHeldStep = (delta: number) => {
     const next = Math.max(1, Math.min(999, safeHeld + delta));
@@ -343,7 +355,7 @@ export function App() {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* THEME SELECTOR - HYBRID INSET */}
+            {/* THEME SELECTOR */}
             <div
               className={`flex p-1 rounded-2xl ${
                 isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
@@ -411,7 +423,7 @@ export function App() {
           </div>
         </header>
 
-        {/* TABS SELECTOR - HYBRID SEGMENTED CONTROL */}
+        {/* TABS SELECTOR */}
         <div
           className={`anim-item flex p-1 rounded-2xl ${
             isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
@@ -449,7 +461,7 @@ export function App() {
         {tab === 'calc' && (
           <div className="flex flex-col gap-3.5 sm:gap-4">
             
-            {/* HERO OUTCOME BANNER - HYBRID NEO-APPLE REALISM */}
+            {/* HERO OUTCOME BANNER */}
             <section
               className={`anim-item p-5 sm:p-7 rounded-3xl transition-all relative overflow-hidden ${
                 isDark
@@ -521,7 +533,8 @@ export function App() {
                 </div>
                 <div className="w-full h-2.5 sm:h-3 rounded-full bg-black/15 dark:bg-black/50 overflow-hidden relative shadow-inner">
                   <div
-                    className={`h-full transition-all duration-300 rounded-full ${
+                    ref={progressBarRef}
+                    className={`h-full rounded-full ${
                       isSafe ? 'bg-[#10b981]' : 'bg-[#f43f5e]'
                     }`}
                     style={{ width: `${Math.min(100, Math.max(0, currentPct))}%` }}
@@ -530,7 +543,7 @@ export function App() {
               </div>
             </section>
 
-            {/* CONTROLS CARD - HYBRID CARD */}
+            {/* CONTROLS CARD */}
             <section
               className={`anim-item p-4 sm:p-5 rounded-3xl flex flex-col gap-3.5 sm:gap-4 ${
                 isDark ? 'hybrid-card-dark' : 'hybrid-card-light'
@@ -697,7 +710,7 @@ export function App() {
                 </div>
               </div>
 
-              {/* THREE SUMMARY CHIPS WITH HIGH CONTRAST */}
+              {/* THREE SUMMARY CHIPS */}
               <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                 <div
                   className={`p-2.5 sm:p-3 rounded-2xl text-center ${

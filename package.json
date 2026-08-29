@@ -12,6 +12,7 @@
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.3.3",
+    "animejs": "^4.5.0",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "gsap": "^3.15.0",
