@@ -4,6 +4,7 @@ import { Plus, Minus, Trash2, Sun, Moon, Laptop, Copy, Check, Sparkles, AlertCir
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import confetti from 'canvas-confetti';
+import { CanvasBackground } from './CanvasBackground';
 
 gsap.registerPlugin(useGSAP);
 
@@ -226,6 +227,29 @@ export function App() {
     );
   };
 
+  const stepSubject = (id: number, field: 'held' | 'attended' | 'threshold', delta: number) => {
+    setSubjects(prev =>
+      prev.map(s => {
+        if (s.id === id) {
+          const currentVal = s[field];
+          let nextVal = currentVal + delta;
+          const updated = { ...s };
+
+          if (field === 'held') {
+            updated.held = Math.max(1, nextVal);
+            if (updated.attended > updated.held) updated.attended = updated.held;
+          } else if (field === 'attended') {
+            updated.attended = Math.max(0, Math.min(nextVal, s.held));
+          } else if (field === 'threshold') {
+            updated.threshold = Math.max(50, Math.min(95, nextVal));
+          }
+          return updated;
+        }
+        return s;
+      })
+    );
+  };
+
   const addSubject = () => {
     setSubjects(prev => [
       ...prev,
@@ -252,13 +276,16 @@ export function App() {
   return (
     <main
       ref={containerRef}
-      className={`min-h-screen transition-colors duration-200 flex flex-col items-center justify-start p-4 sm:p-8 pb-24 ${
+      className={`min-h-screen transition-colors duration-200 flex flex-col items-center justify-start p-4 sm:p-8 pb-24 relative overflow-x-hidden ${
         isDark
-          ? 'bg-[#080b10] text-[#f8fafc] bg-grid-dark'
-          : 'bg-[#fafafa] text-[#0f172a] bg-grid-light'
+          ? 'bg-[#080b10] text-[#f8fafc]'
+          : 'bg-[#fafafa] text-[#0f172a]'
       }`}
     >
-      <div className="w-full max-w-[520px] flex flex-col gap-4">
+      {/* Interactive dynamic particle wave background */}
+      <CanvasBackground theme={effectiveTheme} />
+
+      <div className="w-full max-w-[520px] flex flex-col gap-4 relative z-10">
         
         {/* TOP BRAND NAV BAR */}
         <header className="anim-item flex items-center justify-between px-1">
@@ -781,7 +808,7 @@ export function App() {
                 return (
                   <div
                     key={s.id}
-                    className={`p-3.5 rounded-2xl border flex flex-col gap-3 ${
+                    className={`p-4 rounded-2xl border flex flex-col gap-3.5 ${
                       isDark
                         ? 'bg-[#18202e] border-[#243044]'
                         : 'bg-[#f1f5f9] border-[#cbd5e1]'
@@ -792,7 +819,7 @@ export function App() {
                         type="text"
                         value={s.name}
                         onChange={e => updateSubject(s.id, 'name', e.target.value)}
-                        className={`flex-1 text-xs font-bold px-3 py-1.5 rounded-xl border outline-none ${
+                        className={`flex-1 text-xs font-bold px-3 py-2 rounded-xl border outline-none ${
                           isDark
                             ? 'bg-[#111722] border-[#243044] text-white focus:border-[#ff5722]'
                             : 'bg-white border-[#0f172a] text-[#0f172a]'
@@ -801,56 +828,111 @@ export function App() {
                       <button
                         type="button"
                         onClick={() => deleteSubject(s.id)}
-                        className="text-[#f43f5e] hover:bg-[#f43f5e]/10 p-1.5 rounded-xl transition-colors"
+                        className="text-[#f43f5e] hover:bg-[#f43f5e]/10 p-2 rounded-xl transition-colors"
                       >
-                        <Trash2 size={15} />
+                        <Trash2 size={16} />
                       </button>
                     </div>
 
+                    {/* REDESIGNED TACTILE COUNTER CELLS */}
                     <div className="grid grid-cols-3 gap-2">
+                      
+                      {/* HELD COUNTER */}
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-mono font-bold text-[#94a3b8]">Held</span>
-                        <input
-                          type="number"
-                          value={sHeld}
-                          min="1"
-                          onChange={e => updateSubject(s.id, 'held', parseInt(e.target.value, 10) || 1)}
-                          className={`text-center font-mono font-bold text-xs p-1.5 rounded-xl border outline-none ${
+                        <span className="text-[10px] font-mono font-bold text-[#94a3b8] text-center">
+                          Held
+                        </span>
+                        <div
+                          className={`flex items-center justify-between rounded-xl border p-1 ${
                             isDark
-                              ? 'bg-[#111722] border-[#243044] text-white focus:border-[#ff5722]'
-                              : 'bg-white border-[#0f172a] text-[#0f172a]'
+                              ? 'bg-[#111722] border-[#243044]'
+                              : 'bg-white border-[#0f172a]'
                           }`}
-                        />
+                        >
+                          <button
+                            type="button"
+                            onClick={() => stepSubject(s.id, 'held', -1)}
+                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                          >
+                            <Minus size={12} />
+                          </button>
+                          <span className="font-mono font-black text-xs px-1 text-center">
+                            {sHeld}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => stepSubject(s.id, 'held', 1)}
+                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                          >
+                            <Plus size={12} />
+                          </button>
+                        </div>
                       </div>
+
+                      {/* ATTENDED COUNTER */}
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-mono font-bold text-[#94a3b8]">Attended</span>
-                        <input
-                          type="number"
-                          value={sAttended}
-                          min="0"
-                          onChange={e => updateSubject(s.id, 'attended', parseInt(e.target.value, 10) || 0)}
-                          className={`text-center font-mono font-bold text-xs p-1.5 rounded-xl border outline-none ${
+                        <span className="text-[10px] font-mono font-bold text-[#94a3b8] text-center">
+                          Attended
+                        </span>
+                        <div
+                          className={`flex items-center justify-between rounded-xl border p-1 ${
                             isDark
-                              ? 'bg-[#111722] border-[#243044] text-white focus:border-[#ff5722]'
-                              : 'bg-white border-[#0f172a] text-[#0f172a]'
+                              ? 'bg-[#111722] border-[#243044]'
+                              : 'bg-white border-[#0f172a]'
                           }`}
-                        />
+                        >
+                          <button
+                            type="button"
+                            onClick={() => stepSubject(s.id, 'attended', -1)}
+                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                          >
+                            <Minus size={12} />
+                          </button>
+                          <span className="font-mono font-black text-xs px-1 text-center">
+                            {sAttended}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => stepSubject(s.id, 'attended', 1)}
+                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                          >
+                            <Plus size={12} />
+                          </button>
+                        </div>
                       </div>
+
+                      {/* TARGET % COUNTER */}
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-mono font-bold text-[#94a3b8]">Target %</span>
-                        <input
-                          type="number"
-                          value={sThreshold}
-                          min="50"
-                          max="95"
-                          onChange={e => updateSubject(s.id, 'threshold', parseInt(e.target.value, 10) || 75)}
-                          className={`text-center font-mono font-bold text-xs p-1.5 rounded-xl border outline-none ${
+                        <span className="text-[10px] font-mono font-bold text-[#94a3b8] text-center">
+                          Target %
+                        </span>
+                        <div
+                          className={`flex items-center justify-between rounded-xl border p-1 ${
                             isDark
-                              ? 'bg-[#111722] border-[#243044] text-white focus:border-[#ff5722]'
-                              : 'bg-white border-[#0f172a] text-[#0f172a]'
+                              ? 'bg-[#111722] border-[#243044]'
+                              : 'bg-white border-[#0f172a]'
                           }`}
-                        />
+                        >
+                          <button
+                            type="button"
+                            onClick={() => stepSubject(s.id, 'threshold', -5)}
+                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                          >
+                            <Minus size={12} />
+                          </button>
+                          <span className="font-mono font-black text-xs px-1 text-center text-[#ff5722]">
+                            {sThreshold}%
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => stepSubject(s.id, 'threshold', 5)}
+                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                          >
+                            <Plus size={12} />
+                          </button>
+                        </div>
                       </div>
+
                     </div>
 
                     <div className="flex justify-between items-center pt-2 border-t border-dashed border-[#243044] text-xs">
