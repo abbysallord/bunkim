@@ -19,6 +19,7 @@ export function App() {
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLSpanElement>(null);
+  const isInitialMount = useRef<boolean>(true);
 
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('dark');
   const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>('dark');
@@ -103,19 +104,24 @@ export function App() {
   // GSAP Initial entrance animation
   useGSAP(() => {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.from('header', { y: -20, opacity: 0, duration: 0.45 })
-      .from('.tab-bar', { scale: 0.95, opacity: 0, duration: 0.35 }, '-=0.25')
-      .from(heroRef.current, { y: 25, opacity: 0, duration: 0.5 }, '-=0.2')
-      .from('.anim-card', { y: 20, opacity: 0, stagger: 0.08, duration: 0.4 }, '-=0.3');
+    tl.from('header', { y: -16, opacity: 0, duration: 0.4 })
+      .from('.tab-bar', { scale: 0.96, opacity: 0, duration: 0.3 }, '-=0.2')
+      .from(heroRef.current, { y: 20, opacity: 0, duration: 0.45 }, '-=0.15')
+      .from('.anim-card', { y: 16, opacity: 0, stagger: 0.06, duration: 0.35 }, '-=0.25');
   }, { scope: containerRef });
 
-  // GSAP Number bump animation on value change
+  // GSAP Number bump animation strictly on subsequent user value changes
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     if (numberRef.current) {
+      gsap.killTweensOf(numberRef.current);
       gsap.fromTo(
         numberRef.current,
-        { scale: 1.22, y: -3 },
-        { scale: 1, y: 0, duration: 0.35, ease: 'back.out(2)' }
+        { scale: 1.25, y: -4 },
+        { scale: 1, y: 0, duration: 0.32, ease: 'back.out(2)', clearProps: 'all' }
       );
     }
   }, [maxBunk, neededClasses, isSafe]);
