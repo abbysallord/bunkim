@@ -4,7 +4,6 @@ import { Plus, Minus, Trash2, Sun, Moon, Laptop, Copy, Check, Sparkles, AlertCir
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import confetti from 'canvas-confetti';
-import { CanvasBackground } from './CanvasBackground';
 
 gsap.registerPlugin(useGSAP);
 
@@ -276,16 +275,13 @@ export function App() {
   return (
     <main
       ref={containerRef}
-      className={`min-h-screen transition-colors duration-200 flex flex-col items-center justify-start p-4 sm:p-8 pb-24 relative overflow-x-hidden ${
+      className={`min-h-screen transition-colors duration-200 flex flex-col items-center justify-start p-4 sm:p-8 pb-24 ${
         isDark
           ? 'bg-[#080b10] text-[#f8fafc]'
-          : 'bg-[#fafafa] text-[#0f172a]'
+          : 'bg-[#f4f5f8] text-[#0f172a]'
       }`}
     >
-      {/* Interactive dynamic particle wave background */}
-      <CanvasBackground theme={effectiveTheme} />
-
-      <div className="w-full max-w-[520px] flex flex-col gap-4 relative z-10">
+      <div className="w-full max-w-[520px] flex flex-col gap-4">
         
         {/* TOP BRAND NAV BAR */}
         <header className="anim-item flex items-center justify-between px-1">
