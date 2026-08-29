@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { translations, type Translation } from './translations';
-import { Plus, Minus, Trash2, Sun, Moon, Laptop, Copy, Check, Sparkles, AlertCircle, RotateCcw } from 'lucide-react';
+import { Plus, Minus, Trash2, Sun, Moon, Laptop, Copy, Check, Sparkles, AlertCircle, RotateCcw, ShieldCheck, Zap } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import confetti from 'canvas-confetti';
@@ -100,7 +100,7 @@ export function App() {
     ? Math.max(0, Math.ceil((thresholdRatio * safeHeld - safeAttended) / (1 - thresholdRatio)))
     : 0;
 
-  // Safe GSAP Page Entrance (using fromTo with explicit clearProps so elements NEVER get stuck hidden)
+  // Safe GSAP Page Entrance
   useGSAP(() => {
     gsap.fromTo(
       '.anim-item',
@@ -252,13 +252,13 @@ export function App() {
   return (
     <main
       ref={containerRef}
-      className={`min-h-screen transition-colors duration-200 flex flex-col items-center justify-start p-3.5 sm:p-6 pb-24 ${
+      className={`min-h-screen transition-colors duration-200 flex flex-col items-center justify-start p-4 sm:p-8 pb-24 ${
         isDark
-          ? 'bg-[#080b10] text-[#f8fafc]'
-          : 'bg-[#fafafa] text-[#0f172a]'
+          ? 'bg-[#080b10] text-[#f8fafc] bg-grid-dark'
+          : 'bg-[#fafafa] text-[#0f172a] bg-grid-light'
       }`}
     >
-      <div className="w-full max-w-[500px] flex flex-col gap-4">
+      <div className="w-full max-w-[520px] flex flex-col gap-4">
         
         {/* TOP BRAND NAV BAR */}
         <header className="anim-item flex items-center justify-between px-1">
@@ -277,7 +277,7 @@ export function App() {
                 bunkim
               </span>
               <span className="text-[10px] text-[#94a3b8] font-mono font-bold tracking-tight">
-                headroom calculator
+                attendance cushion
               </span>
             </div>
           </div>
@@ -391,7 +391,7 @@ export function App() {
 
         {/* TAB 1: QUICK CUSHION */}
         {tab === 'calc' && (
-          <div className="flex flex-col gap-3.5">
+          <div className="flex flex-col gap-4">
             
             {/* HERO OUTCOME BANNER */}
             <section
@@ -458,6 +458,26 @@ export function App() {
                   ? t.heroSafeNote.replace('{t}', String(safeThreshold))
                   : t.heroDangerNote.replace('{t}', String(safeThreshold))}
               </p>
+
+              {/* Real-time visual progress bar */}
+              <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 flex flex-col gap-1.5">
+                <div className="flex justify-between text-[11px] font-mono font-bold">
+                  <span className="opacity-75">Target: {safeThreshold}%</span>
+                  <span className={isSafe ? 'text-[#10b981] dark:text-[#34d399]' : 'text-[#f43f5e] dark:text-[#fb7185]'}>
+                    Current: {currentPct.toFixed(1)}%
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-black/10 dark:bg-black/40 overflow-hidden relative">
+                  <div
+                    className={`h-full transition-all duration-300 rounded-full ${
+                      isSafe
+                        ? 'bg-[#10b981]'
+                        : 'bg-[#f43f5e]'
+                    }`}
+                    style={{ width: `${Math.min(100, Math.max(0, currentPct))}%` }}
+                  />
+                </div>
+              </div>
             </section>
 
             {/* CONTROLS CARD */}
@@ -894,8 +914,16 @@ export function App() {
           </button>
         </div>
 
-        <footer className="text-center text-[10px] text-[#64748b] font-mono">
-          bunkim &bull; offline-first attendance cushion
+        {/* DESKTOP FOOTER & SHORTCUT BADGES */}
+        <footer className="anim-item flex items-center justify-between text-[11px] text-[#64748b] font-mono px-2 pt-2">
+          <div className="flex items-center gap-1.5">
+            <ShieldCheck size={13} className="text-[#10b981]" />
+            <span>100% Client-Side & Private</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Zap size={13} className="text-[#ff5722]" />
+            <span>bunkim v2.0</span>
+          </div>
         </footer>
 
       </div>
