@@ -4,6 +4,15 @@ interface CanvasBackgroundProps {
   theme: 'light' | 'dark';
 }
 
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  baseAlpha: number;
+}
+
 export function CanvasBackground({ theme }: CanvasBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -18,58 +27,124 @@ export function CanvasBackground({ theme }: CanvasBackgroundProps) {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
+    // Mouse tracking for interactive distortion
+    const mouse = { x: -1000, y: -1000, radius: 160 };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    const handleMouseLeave = () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    };
+
     const handleResize = () => {
       if (!canvas) return;
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
+      initParticles();
     };
 
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('resize', handleResize);
 
-    // Dynamic wave mesh particles
-    const cols = 28;
-    const rows = 18;
-    let time = 0;
+    let particles: Particle[] = [];
+    const particleCount = Math.min(85, Math.floor((width * height) / 14000));
+
+    const initParticles = () => {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.7,
+          vy: (Math.random() - 0.5) * 0.7,
+          size: Math.random() * 2 + 2,
+          baseAlpha: Math.random() * 0.3 + 0.35,
+        });
+      }
+    };
+
+    initParticles();
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
-
       const isDark = theme === 'dark';
-      const cellWidth = width / cols;
-      const cellHeight = height / rows;
 
-      ctx.lineWidth = 1;
+      // Connective line max distance
+      const maxDist = 135;
 
-      for (let i = 0; i <= cols; i++) {
-        for (let j = 0; j <= rows; j++) {
-          const x = i * cellWidth;
-          const y = j * cellHeight;
-          
-          // Subtle harmonic sine wave displacement
-          const dist = Math.sqrt((x - width / 2) ** 2 + (y - height / 2) ** 2);
-          const offset = Math.sin(dist * 0.003 - time * 1.5) * Math.cos(x * 0.002 + time) * 6;
+      // Update and draw particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
 
-          const dotRadius = Math.max(1, 1.4 + Math.sin(time + i * 0.2 + j * 0.2) * 0.6);
+        // Move
+        p.x += p.vx;
+        p.y += p.vy;
 
-          ctx.beginPath();
-          ctx.arc(x, y + offset, dotRadius, 0, Math.PI * 2);
+        // Bounce on borders
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
 
-          if (isDark) {
-            ctx.fillStyle = `rgba(255, 87, 34, ${0.08 + Math.sin(time + i * 0.1) * 0.04})`;
-          } else {
-            ctx.fillStyle = `rgba(15, 23, 42, ${0.09 + Math.sin(time + i * 0.1) * 0.04})`;
+        // Mouse avoidance/interaction
+        const dxMouse = mouse.x - p.x;
+        const dyMouse = mouse.y - p.y;
+        const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+        if (distMouse < mouse.radius) {
+          const force = (mouse.radius - distMouse) / mouse.radius;
+          p.x -= (dxMouse / distMouse) * force * 3;
+          p.y -= (dyMouse / distMouse) * force * 3;
+        }
+
+        // Draw particle node
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        if (isDark) {
+          ctx.fillStyle = `rgba(255, 87, 34, ${p.baseAlpha})`;
+          ctx.shadowColor = '#ff5722';
+          ctx.shadowBlur = 6;
+        } else {
+          ctx.fillStyle = `rgba(15, 23, 42, ${p.baseAlpha * 0.8})`;
+          ctx.shadowColor = '#0f172a';
+          ctx.shadowBlur = 2;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0; // reset
+
+        // Draw connective constellation links
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxDist) {
+            const alpha = (1 - dist / maxDist) * (isDark ? 0.35 : 0.22);
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            if (isDark) {
+              ctx.strokeStyle = `rgba(255, 87, 34, ${alpha})`;
+            } else {
+              ctx.strokeStyle = `rgba(15, 23, 42, ${alpha})`;
+            }
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
           }
-          ctx.fill();
         }
       }
 
-      time += 0.012;
       animationFrameId = requestAnimationFrame(render);
     };
 
     render();
 
     return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
@@ -79,7 +154,7 @@ export function CanvasBackground({ theme }: CanvasBackgroundProps) {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.85 }}
+      style={{ opacity: 1 }}
     />
   );
 }
