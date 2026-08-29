@@ -1,0 +1,5 @@
+# robots.txt for bunkim (https://bunkim.vercel.app/)
+User-agent: *
+Allow: /
+
+Sitemap: https://bunkim.vercel.app/sitemap.xml
