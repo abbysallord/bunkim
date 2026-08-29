@@ -272,13 +272,16 @@ export function App() {
 
   const isDark = effectiveTheme === 'dark';
 
+  // Slider progress fill calculation (range 50 to 95)
+  const sliderFillPercent = ((safeThreshold - 50) / (95 - 50)) * 100;
+
   return (
     <main
       ref={containerRef}
       className={`min-h-screen transition-colors duration-200 flex flex-col items-center justify-start p-4 sm:p-8 pb-24 ${
         isDark
-          ? 'bg-[#080b10] text-[#f8fafc]'
-          : 'bg-[#f4f5f8] text-[#0f172a]'
+          ? 'bg-[#080b10] text-[#f8fafc] bg-notebook-dark'
+          : 'bg-[#f8fafc] text-[#0f172a] bg-notebook-light'
       }`}
     >
       <div className="w-full max-w-[520px] flex flex-col gap-4">
@@ -299,7 +302,7 @@ export function App() {
               <span className="font-brand font-black text-2xl tracking-tighter block leading-none">
                 bunkim
               </span>
-              <span className="text-[10px] text-[#94a3b8] font-mono font-bold tracking-tight">
+              <span className={`text-[11px] font-mono font-bold tracking-tight ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                 attendance cushion
               </span>
             </div>
@@ -321,7 +324,7 @@ export function App() {
                 className={`p-1.5 rounded-xl transition-all ${
                   theme === 'light'
                     ? 'bg-[#ff5722] text-white shadow-xs'
-                    : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]'
+                    : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
                 <Sun size={14} />
@@ -333,7 +336,7 @@ export function App() {
                 className={`p-1.5 rounded-xl transition-all ${
                   theme === 'dark'
                     ? 'bg-[#ff5722] text-white shadow-xs'
-                    : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]'
+                    : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
                 <Moon size={14} />
@@ -345,7 +348,7 @@ export function App() {
                 className={`p-1.5 rounded-xl transition-all ${
                   theme === 'system'
                     ? 'bg-[#ff5722] text-white shadow-xs'
-                    : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]'
+                    : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
                 <Laptop size={14} />
@@ -392,7 +395,7 @@ export function App() {
                 ? isDark
                   ? 'bg-[#ff5722] text-white shadow-xs'
                   : 'bg-[#0f172a] text-white shadow-xs'
-                : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]'
+                : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
             }`}
           >
             {t.tabCalc}
@@ -405,7 +408,7 @@ export function App() {
                 ? isDark
                   ? 'bg-[#ff5722] text-white shadow-xs'
                   : 'bg-[#0f172a] text-white shadow-xs'
-                : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#64748b] hover:text-[#0f172a]'
+                : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
             }`}
           >
             {t.tabRoster}
@@ -457,7 +460,7 @@ export function App() {
 
               <div
                 className={`text-xs sm:text-sm font-bold mb-1 ${
-                  isDark ? 'text-[#cbd5e1]' : 'text-[#334155]'
+                  isDark ? 'text-[#cbd5e1]' : 'text-[#1e293b]'
                 }`}
               >
                 {isSafe ? t.heroSafePre : t.heroDangerPre}
@@ -474,7 +477,7 @@ export function App() {
 
               <p
                 className={`text-xs sm:text-sm font-medium mt-2 max-w-[380px] leading-relaxed ${
-                  isDark ? 'text-[#94a3b8]' : 'text-[#475569]'
+                  isDark ? 'text-[#cbd5e1]' : 'text-[#334155]'
                 }`}
               >
                 {isSafe
@@ -485,12 +488,12 @@ export function App() {
               {/* Real-time visual progress bar */}
               <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 flex flex-col gap-1.5">
                 <div className="flex justify-between text-[11px] font-mono font-bold">
-                  <span className="opacity-75">Target: {safeThreshold}%</span>
+                  <span className={isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}>Target: {safeThreshold}%</span>
                   <span className={isSafe ? 'text-[#10b981] dark:text-[#34d399]' : 'text-[#f43f5e] dark:text-[#fb7185]'}>
                     Current: {currentPct.toFixed(1)}%
                   </span>
                 </div>
-                <div className="w-full h-2 rounded-full bg-black/10 dark:bg-black/40 overflow-hidden relative">
+                <div className="w-full h-2.5 rounded-full bg-black/10 dark:bg-black/50 overflow-hidden relative">
                   <div
                     className={`h-full transition-all duration-300 rounded-full ${
                       isSafe
@@ -522,7 +525,7 @@ export function App() {
                       : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <span className="text-[11px] font-mono uppercase font-bold text-[#94a3b8]">
+                  <span className={`text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.heldLabel}
                   </span>
                   
@@ -565,7 +568,7 @@ export function App() {
                       : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <span className="text-[11px] font-mono uppercase font-bold text-[#94a3b8]">
+                  <span className={`text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.attendedLabel}
                   </span>
                   
@@ -602,16 +605,16 @@ export function App() {
 
               </div>
 
-              {/* THRESHOLD SLIDER + TACTILE PRESETS */}
+              {/* REFINED TACTILE THRESHOLD SLIDER */}
               <div
-                className={`p-4 rounded-2xl border flex flex-col gap-3 ${
+                className={`p-4 rounded-2xl border flex flex-col gap-3.5 ${
                   isDark
                     ? 'bg-[#18202e] border-[#243044]'
                     : 'bg-[#f1f5f9] border-[#cbd5e1]'
                 }`}
               >
                 <div className="flex justify-between items-center">
-                  <span className="text-xs font-brand font-black uppercase tracking-wider text-[#94a3b8]">
+                  <span className={`text-xs font-brand font-black uppercase tracking-wider ${isDark ? 'text-[#cbd5e1]' : 'text-[#1e293b]'}`}>
                     {t.targetLabel}
                   </span>
                   <span className="font-mono font-black text-lg text-[#ff5722]">
@@ -619,17 +622,25 @@ export function App() {
                   </span>
                 </div>
 
-                <input
-                  type="range"
-                  min="50"
-                  max="95"
-                  value={safeThreshold}
-                  onChange={e => {
-                    setThreshold(parseInt(e.target.value, 10));
-                    setSimDiff(null);
-                  }}
-                  className="w-full accent-[#ff5722] h-2 bg-[#cbd5e1] dark:bg-[#080b10] rounded-full cursor-pointer"
-                />
+                {/* Custom Dual-Tone Track Slider */}
+                <div className="relative flex items-center w-full my-1">
+                  <input
+                    type="range"
+                    min="50"
+                    max="95"
+                    value={safeThreshold}
+                    onChange={e => {
+                      setThreshold(parseInt(e.target.value, 10));
+                      setSimDiff(null);
+                    }}
+                    style={{
+                      background: isDark
+                        ? `linear-gradient(to right, #ff5722 0%, #ff5722 ${sliderFillPercent}%, #080b10 ${sliderFillPercent}%, #080b10 100%)`
+                        : `linear-gradient(to right, #ff5722 0%, #ff5722 ${sliderFillPercent}%, #cbd5e1 ${sliderFillPercent}%, #cbd5e1 100%)`
+                    }}
+                    className="bunkim-slider w-full h-2.5 rounded-full border border-black/10 dark:border-white/10"
+                  />
+                </div>
 
                 <div className="flex gap-2 justify-between">
                   {[75, 80, 85, 65].map(p => (
@@ -640,12 +651,12 @@ export function App() {
                         setThreshold(p);
                         setSimDiff(null);
                       }}
-                      className={`flex-1 py-1.5 text-xs font-mono font-black rounded-xl border transition-all active:scale-95 ${
+                      className={`flex-1 py-2 text-xs font-mono font-black rounded-xl border transition-all active:scale-95 ${
                         safeThreshold === p
-                          ? 'bg-[#ff5722] text-white border-[#ff5722]'
+                          ? 'bg-[#ff5722] text-white border-[#ff5722] shadow-sm'
                           : isDark
                             ? 'bg-[#111722] text-[#cbd5e1] border-[#2b3950] hover:text-white hover:border-[#ff5722]'
-                            : 'bg-white text-[#475569] border-[#0f172a] hover:text-[#0f172a]'
+                            : 'bg-white text-[#1e293b] border-[#0f172a] hover:bg-[#ff5722] hover:text-white'
                       }`}
                     >
                       {p}%
@@ -654,14 +665,14 @@ export function App() {
                 </div>
               </div>
 
-              {/* THREE SUMMARY CHIPS */}
+              {/* THREE SUMMARY CHIPS WITH HIGH CONTRAST */}
               <div className="grid grid-cols-3 gap-2">
                 <div
                   className={`p-3 rounded-2xl border text-center ${
                     isDark ? 'bg-[#18202e] border-[#243044]' : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <div className="text-[10px] font-mono uppercase font-bold text-[#94a3b8]">
+                  <div className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.pctLabel}
                   </div>
                   <div className="font-mono font-black text-base sm:text-lg mt-0.5">
@@ -674,7 +685,7 @@ export function App() {
                     isDark ? 'bg-[#18202e] border-[#243044]' : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <div className="text-[10px] font-mono uppercase font-bold text-[#94a3b8]">
+                  <div className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.missedLabel}
                   </div>
                   <div className="font-mono font-black text-base sm:text-lg mt-0.5">
@@ -687,7 +698,7 @@ export function App() {
                     isDark ? 'bg-[#18202e] border-[#243044]' : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <div className="text-[10px] font-mono uppercase font-bold text-[#94a3b8]">
+                  <div className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.marginLabel}
                   </div>
                   <div
@@ -711,9 +722,9 @@ export function App() {
                   : 'bg-white border-[#0f172a] neo-box-light'
               }`}
             >
-              <div className="flex justify-between items-center text-xs font-brand font-black uppercase text-[#94a3b8]">
-                <span>{t.simTitle}</span>
-                <span className="text-[10px] font-mono text-[#64748b]">live test</span>
+              <div className="flex justify-between items-center text-xs font-brand font-black uppercase">
+                <span className={isDark ? 'text-[#cbd5e1]' : 'text-[#1e293b]'}>{t.simTitle}</span>
+                <span className={`text-[10px] font-mono ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>live test</span>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
@@ -748,7 +759,7 @@ export function App() {
                     : 'bg-[#f8fafc] border-[#cbd5e1]'
                 }`}
               >
-                <span className={`font-medium ${isDark ? 'text-[#94a3b8]' : 'text-[#64748b]'}`}>
+                <span className={`font-semibold ${isDark ? 'text-[#cbd5e1]' : 'text-[#334155]'}`}>
                   {simDiff ? simDiff.label : t.simDefaultPrompt}
                 </span>
                 <span
@@ -757,7 +768,7 @@ export function App() {
                       ? simDiff.safe
                         ? isDark ? 'text-[#34d399]' : 'text-[#059669]'
                         : isDark ? 'text-[#fb7185]' : 'text-[#e11d48]'
-                      : 'text-[#64748b]'
+                      : isDark ? 'text-[#94a3b8]' : 'text-[#475569]'
                   }`}
                 >
                   {simDiff ? simDiff.text : '--'}
@@ -778,7 +789,7 @@ export function App() {
             }`}
           >
             <div className="flex justify-between items-center pb-2 border-b border-dashed border-[#2b3950]">
-              <h2 className="text-xs font-brand font-black uppercase tracking-wider text-[#94a3b8]">
+              <h2 className={`text-xs font-brand font-black uppercase tracking-wider ${isDark ? 'text-[#cbd5e1]' : 'text-[#1e293b]'}`}>
                 {t.rosterTitle}
               </h2>
               <div className="font-mono font-black text-sm text-[#ff5722]">
@@ -830,12 +841,12 @@ export function App() {
                       </button>
                     </div>
 
-                    {/* REDESIGNED TACTILE COUNTER CELLS */}
+                    {/* TACTILE COUNTER CELLS WITH HIGH CONTRAST */}
                     <div className="grid grid-cols-3 gap-2">
                       
                       {/* HELD COUNTER */}
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-mono font-bold text-[#94a3b8] text-center">
+                        <span className={`text-[10px] font-mono font-bold text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                           Held
                         </span>
                         <div
@@ -867,7 +878,7 @@ export function App() {
 
                       {/* ATTENDED COUNTER */}
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-mono font-bold text-[#94a3b8] text-center">
+                        <span className={`text-[10px] font-mono font-bold text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                           Attended
                         </span>
                         <div
@@ -899,7 +910,7 @@ export function App() {
 
                       {/* TARGET % COUNTER */}
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] font-mono font-bold text-[#94a3b8] text-center">
+                        <span className={`text-[10px] font-mono font-bold text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                           Target %
                         </span>
                         <div
@@ -971,7 +982,7 @@ export function App() {
             onClick={resetAll}
             className={`py-3 px-4 rounded-2xl border font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 active:scale-95 ${
               isDark
-                ? 'bg-[#111722] border-[#1d2738] text-[#94a3b8] hover:text-white'
+                ? 'bg-[#111722] border-[#1d2738] text-[#cbd5e1] hover:text-white'
                 : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#f1f5f9]'
             }`}
           >
@@ -993,14 +1004,14 @@ export function App() {
         </div>
 
         {/* DESKTOP FOOTER & SHORTCUT BADGES */}
-        <footer className="anim-item flex items-center justify-between text-[11px] text-[#64748b] font-mono px-2 pt-2">
+        <footer className="anim-item flex items-center justify-between text-[11px] font-mono px-2 pt-2">
           <div className="flex items-center gap-1.5">
             <ShieldCheck size={13} className="text-[#10b981]" />
-            <span>100% Client-Side & Private</span>
+            <span className={isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}>100% Client-Side &amp; Private</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Zap size={13} className="text-[#ff5722]" />
-            <span>bunkim v2.0</span>
+            <span className={isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}>bunkim v2.0</span>
           </div>
         </footer>
 
