@@ -327,9 +327,7 @@ export function App() {
           <div className="flex items-center gap-2.5">
             <div
               className={`w-9 h-9 rounded-2xl flex items-center justify-center font-brand font-black text-lg ${
-                isDark
-                  ? 'bg-[#ff5722] text-white apple-button-dark'
-                  : 'bg-[#ff5722] text-white apple-button-light'
+                isDark ? 'hybrid-button-dark text-white' : 'hybrid-button-light text-white'
               }`}
             >
               b
@@ -345,10 +343,10 @@ export function App() {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* THEME SELECTOR - REALISTIC BEVEL */}
+            {/* THEME SELECTOR - HYBRID INSET */}
             <div
               className={`flex p-1 rounded-2xl ${
-                isDark ? 'apple-inset-dark' : 'apple-inset-light'
+                isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
               }`}
             >
               <button
@@ -357,7 +355,7 @@ export function App() {
                 title="Light mode"
                 className={`p-1.5 rounded-xl transition-all ${
                   theme === 'light'
-                    ? 'bg-[#ff5722] text-white apple-button-light'
+                    ? isDark ? 'hybrid-button-dark text-white' : 'hybrid-button-light text-white'
                     : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
@@ -369,7 +367,7 @@ export function App() {
                 title="Dark mode"
                 className={`p-1.5 rounded-xl transition-all ${
                   theme === 'dark'
-                    ? 'bg-[#ff5722] text-white apple-button-dark'
+                    ? isDark ? 'hybrid-button-dark text-white' : 'hybrid-button-light text-white'
                     : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
@@ -381,7 +379,7 @@ export function App() {
                 title="System preference"
                 className={`p-1.5 rounded-xl transition-all ${
                   theme === 'system'
-                    ? 'bg-[#ff5722] text-white apple-button-dark'
+                    ? isDark ? 'hybrid-button-dark text-white' : 'hybrid-button-light text-white'
                     : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
@@ -395,8 +393,8 @@ export function App() {
               onChange={e => setLang(e.target.value)}
               className={`text-xs font-mono font-bold px-3 py-1.5 sm:py-2 rounded-2xl outline-none cursor-pointer transition-colors ${
                 isDark
-                  ? 'apple-card-dark text-[#f8fafc] hover:border-white/20'
-                  : 'apple-card-light text-[#0f172a]'
+                  ? 'hybrid-card-dark text-[#f8fafc] hover:border-white/20'
+                  : 'hybrid-card-light text-[#0f172a]'
               }`}
             >
               <option value="en">EN</option>
@@ -413,10 +411,10 @@ export function App() {
           </div>
         </header>
 
-        {/* TABS SELECTOR - APPLE SEGMENTED CONTROL */}
+        {/* TABS SELECTOR - HYBRID SEGMENTED CONTROL */}
         <div
           className={`anim-item flex p-1 rounded-2xl ${
-            isDark ? 'apple-inset-dark' : 'apple-inset-light'
+            isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
           }`}
         >
           <button
@@ -425,7 +423,7 @@ export function App() {
             className={`flex-1 py-2 sm:py-2.5 rounded-xl font-brand font-black text-xs uppercase tracking-wider transition-all ${
               tab === 'calc'
                 ? isDark
-                  ? 'bg-[#ff5722] text-white apple-button-dark'
+                  ? 'hybrid-button-dark text-white'
                   : 'bg-[#0f172a] text-white shadow-sm'
                 : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
             }`}
@@ -438,7 +436,7 @@ export function App() {
             className={`flex-1 py-2 sm:py-2.5 rounded-xl font-brand font-black text-xs uppercase tracking-wider transition-all ${
               tab === 'roster'
                 ? isDark
-                  ? 'bg-[#ff5722] text-white apple-button-dark'
+                  ? 'hybrid-button-dark text-white'
                   : 'bg-[#0f172a] text-white shadow-sm'
                 : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
             }`}
@@ -451,7 +449,7 @@ export function App() {
         {tab === 'calc' && (
           <div className="flex flex-col gap-3.5 sm:gap-4">
             
-            {/* HERO OUTCOME BANNER - REALISTIC SPECULAR HIGHLIGHTS */}
+            {/* HERO OUTCOME BANNER - HYBRID NEO-APPLE REALISM */}
             <section
               className={`anim-item p-5 sm:p-7 rounded-3xl transition-all relative overflow-hidden ${
                 isDark
@@ -465,10 +463,10 @@ export function App() {
                     isSafe
                       ? isDark
                         ? 'bg-[#10b981]/25 text-[#34d399] border-[#10b981]/60'
-                        : 'bg-[#10b981] text-white border-[#059669]'
+                        : 'bg-[#10b981] text-white border-[#0f172a]'
                       : isDark
                         ? 'bg-[#f43f5e]/25 text-[#fb7185] border-[#f43f5e]/60'
-                        : 'bg-[#f43f5e] text-white border-[#e11d48]'
+                        : 'bg-[#f43f5e] text-white border-[#0f172a]'
                   }`}
                 >
                   {isSafe ? <Sparkles size={12} /> : <AlertCircle size={12} />}
@@ -479,7 +477,7 @@ export function App() {
                   className={`font-mono font-black text-[11px] sm:text-xs px-2.5 py-1 rounded-lg border ${
                     isDark
                       ? 'bg-[#080b10]/70 text-[#cbd5e1] border-white/10'
-                      : 'bg-white/70 text-[#0f172a] border-black/10'
+                      : 'bg-white/80 text-[#0f172a] border-[#0f172a]/30'
                   }`}
                 >
                   {currentPct.toFixed(1)}% / {safeThreshold}% req
@@ -521,7 +519,7 @@ export function App() {
                     Current: {currentPct.toFixed(1)}%
                   </span>
                 </div>
-                <div className="w-full h-2 sm:h-2.5 rounded-full bg-black/10 dark:bg-black/50 overflow-hidden relative shadow-inner">
+                <div className="w-full h-2.5 sm:h-3 rounded-full bg-black/15 dark:bg-black/50 overflow-hidden relative shadow-inner">
                   <div
                     className={`h-full transition-all duration-300 rounded-full ${
                       isSafe ? 'bg-[#10b981]' : 'bg-[#f43f5e]'
@@ -532,19 +530,19 @@ export function App() {
               </div>
             </section>
 
-            {/* CONTROLS CARD - APPLE CARD DEPTH */}
+            {/* CONTROLS CARD - HYBRID CARD */}
             <section
               className={`anim-item p-4 sm:p-5 rounded-3xl flex flex-col gap-3.5 sm:gap-4 ${
-                isDark ? 'apple-card-dark' : 'apple-card-light'
+                isDark ? 'hybrid-card-dark' : 'hybrid-card-light'
               }`}
             >
-              {/* TWO HYBRID (STEPPER + DIRECT TYPEABLE) NUMBER CONTROLLERS */}
+              {/* TWO HYBRID NUMBER CONTROLLERS */}
               <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                 
                 {/* CLASSES HELD */}
                 <div
                   className={`p-3 sm:p-3.5 rounded-2xl flex flex-col gap-1.5 sm:gap-2 ${
-                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
+                    isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
                   }`}
                 >
                   <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -555,10 +553,10 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleHeldStep(-1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
-                          ? 'bg-[#111722] text-white hover:bg-[#ff5722] apple-button-dark'
-                          : 'bg-white text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-xs'
+                          ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
+                          : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-2xs'
                       }`}
                     >
                       <Minus size={14} />
@@ -579,10 +577,10 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleHeldStep(1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
-                          ? 'bg-[#111722] text-white hover:bg-[#ff5722] apple-button-dark'
-                          : 'bg-white text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-xs'
+                          ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
+                          : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-2xs'
                       }`}
                     >
                       <Plus size={14} />
@@ -593,7 +591,7 @@ export function App() {
                 {/* CLASSES ATTENDED */}
                 <div
                   className={`p-3 sm:p-3.5 rounded-2xl flex flex-col gap-1.5 sm:gap-2 ${
-                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
+                    isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
                   }`}
                 >
                   <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -604,10 +602,10 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleAttendedStep(-1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
-                          ? 'bg-[#111722] text-white hover:bg-[#ff5722] apple-button-dark'
-                          : 'bg-white text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-xs'
+                          ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
+                          : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-2xs'
                       }`}
                     >
                       <Minus size={14} />
@@ -628,10 +626,10 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleAttendedStep(1)}
-                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
-                          ? 'bg-[#111722] text-white hover:bg-[#ff5722] apple-button-dark'
-                          : 'bg-white text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-xs'
+                          ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
+                          : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white shadow-2xs'
                       }`}
                     >
                       <Plus size={14} />
@@ -644,7 +642,7 @@ export function App() {
               {/* REFINED TACTILE THRESHOLD SLIDER */}
               <div
                 className={`p-3.5 sm:p-4 rounded-2xl flex flex-col gap-2.5 sm:gap-3.5 ${
-                  isDark ? 'apple-inset-dark' : 'apple-inset-light'
+                  isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
                 }`}
               >
                 <div className="flex justify-between items-center">
@@ -685,12 +683,12 @@ export function App() {
                         setThreshold(p);
                         setSimDiff(null);
                       }}
-                      className={`flex-1 py-1.5 sm:py-2 text-xs font-mono font-black rounded-xl transition-all active:scale-95 ${
+                      className={`flex-1 py-1.5 sm:py-2 text-xs font-mono font-black rounded-xl border transition-all active:scale-95 ${
                         safeThreshold === p
-                          ? 'bg-[#ff5722] text-white apple-button-dark'
+                          ? isDark ? 'hybrid-button-dark text-white' : 'hybrid-button-light text-white'
                           : isDark
-                            ? 'bg-[#111722] text-[#cbd5e1] hover:text-white hover:bg-[#18202e] border border-white/5'
-                            : 'bg-white text-[#1e293b] hover:bg-[#ff5722] hover:text-white shadow-2xs'
+                            ? 'bg-[#111722] text-[#cbd5e1] hover:text-white hover:bg-[#18202e] border-[#2b3950]'
+                            : 'bg-white text-[#1e293b] border-[#0f172a] hover:bg-[#ff5722] hover:text-white'
                       }`}
                     >
                       {p}%
@@ -703,7 +701,7 @@ export function App() {
               <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                 <div
                   className={`p-2.5 sm:p-3 rounded-2xl text-center ${
-                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
+                    isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
                   }`}
                 >
                   <div className={`text-[9px] sm:text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -716,7 +714,7 @@ export function App() {
 
                 <div
                   className={`p-2.5 sm:p-3 rounded-2xl text-center ${
-                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
+                    isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
                   }`}
                 >
                   <div className={`text-[9px] sm:text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -729,7 +727,7 @@ export function App() {
 
                 <div
                   className={`p-2.5 sm:p-3 rounded-2xl text-center ${
-                    isDark ? 'apple-inset-dark' : 'apple-inset-light'
+                    isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
                   }`}
                 >
                   <div className={`text-[9px] sm:text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
@@ -751,7 +749,7 @@ export function App() {
             {/* WHAT-IF SIMULATOR DECK */}
             <section
               className={`anim-item p-3.5 sm:p-5 rounded-3xl flex flex-col gap-2.5 sm:gap-3 ${
-                isDark ? 'apple-card-dark' : 'apple-card-light'
+                isDark ? 'hybrid-card-dark' : 'hybrid-card-light'
               }`}
             >
               <div className="flex justify-between items-center text-xs font-brand font-black uppercase">
@@ -765,8 +763,8 @@ export function App() {
                   onClick={() => simulateImpact('miss')}
                   className={`py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl text-xs font-bold font-mono transition-all active:scale-95 ${
                     isDark
-                      ? 'apple-inset-dark text-[#f8fafc] hover:border-[#ff5722]'
-                      : 'apple-inset-light text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
+                      ? 'hybrid-inset-dark text-[#f8fafc] hover:border-[#ff5722]'
+                      : 'hybrid-inset-light text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
                   }`}
                 >
                   {t.simMiss}
@@ -776,8 +774,8 @@ export function App() {
                   onClick={() => simulateImpact('attend')}
                   className={`py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl text-xs font-bold font-mono transition-all active:scale-95 ${
                     isDark
-                      ? 'apple-inset-dark text-[#f8fafc] hover:border-[#10b981]'
-                      : 'apple-inset-light text-[#0f172a] hover:bg-[#10b981] hover:text-white'
+                      ? 'hybrid-inset-dark text-[#f8fafc] hover:border-[#10b981]'
+                      : 'hybrid-inset-light text-[#0f172a] hover:bg-[#10b981] hover:text-white'
                   }`}
                 >
                   {t.simAttend}
@@ -786,7 +784,7 @@ export function App() {
 
               <div
                 className={`px-3 py-2.5 sm:px-4 sm:py-3 rounded-2xl text-xs flex items-center justify-between ${
-                  isDark ? 'apple-inset-dark' : 'apple-inset-light'
+                  isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
                 }`}
               >
                 <span className={`font-semibold text-[11px] sm:text-xs ${isDark ? 'text-[#cbd5e1]' : 'text-[#334155]'}`}>
@@ -813,7 +811,7 @@ export function App() {
         {tab === 'roster' && (
           <section
             className={`p-4 sm:p-5 rounded-3xl flex flex-col gap-3.5 sm:gap-4 ${
-              isDark ? 'apple-card-dark' : 'apple-card-light'
+              isDark ? 'hybrid-card-dark' : 'hybrid-card-light'
             }`}
           >
             <div className="flex justify-between items-center pb-2 border-b border-dashed border-[#2b3950]">
@@ -844,7 +842,7 @@ export function App() {
                   <div
                     key={s.id}
                     className={`p-3.5 rounded-2xl flex flex-col gap-3 ${
-                      isDark ? 'apple-inset-dark' : 'apple-inset-light'
+                      isDark ? 'hybrid-inset-dark' : 'hybrid-inset-light'
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -854,10 +852,10 @@ export function App() {
                         value={s.name}
                         placeholder="Subject name"
                         onChange={e => updateSubject(s.id, 'name', e.target.value)}
-                        className={`flex-1 text-xs font-bold px-3 py-1.5 sm:py-2 rounded-xl outline-none ${
+                        className={`flex-1 text-xs font-bold px-3 py-1.5 sm:py-2 rounded-xl border outline-none ${
                           isDark
-                            ? 'bg-[#111722] text-white focus:ring-1 focus:ring-[#ff5722]'
-                            : 'bg-white text-[#0f172a] shadow-2xs'
+                            ? 'bg-[#111722] border-[#243044] text-white focus:border-[#ff5722]'
+                            : 'bg-white border-[#0f172a] text-[#0f172a]'
                         }`}
                       />
                       <button
@@ -878,8 +876,8 @@ export function App() {
                           Held
                         </span>
                         <div
-                          className={`flex items-center justify-between rounded-xl p-0.5 sm:p-1 ${
-                            isDark ? 'bg-[#111722]' : 'bg-white shadow-2xs'
+                          className={`flex items-center justify-between rounded-xl border p-0.5 sm:p-1 ${
+                            isDark ? 'bg-[#111722] border-[#243044]' : 'bg-white border-[#0f172a]'
                           }`}
                         >
                           <button
@@ -914,8 +912,8 @@ export function App() {
                           Attended
                         </span>
                         <div
-                          className={`flex items-center justify-between rounded-xl p-0.5 sm:p-1 ${
-                            isDark ? 'bg-[#111722]' : 'bg-white shadow-2xs'
+                          className={`flex items-center justify-between rounded-xl border p-0.5 sm:p-1 ${
+                            isDark ? 'bg-[#111722] border-[#243044]' : 'bg-white border-[#0f172a]'
                           }`}
                         >
                           <button
@@ -950,8 +948,8 @@ export function App() {
                           Target %
                         </span>
                         <div
-                          className={`flex items-center justify-between rounded-xl p-0.5 sm:p-1 ${
-                            isDark ? 'bg-[#111722]' : 'bg-white shadow-2xs'
+                          className={`flex items-center justify-between rounded-xl border p-0.5 sm:p-1 ${
+                            isDark ? 'bg-[#111722] border-[#243044]' : 'bg-white border-[#0f172a]'
                           }`}
                         >
                           <button
@@ -1009,15 +1007,15 @@ export function App() {
           </section>
         )}
 
-        {/* BOTTOM ACTION BAR - REALISTIC SHADOWS */}
+        {/* BOTTOM ACTION BAR */}
         <div className="anim-item flex gap-2">
           <button
             type="button"
             onClick={resetAll}
             className={`py-2.5 px-3 sm:py-3 sm:px-4 rounded-2xl font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 active:scale-95 ${
               isDark
-                ? 'apple-card-dark text-[#cbd5e1] hover:text-white'
-                : 'apple-card-light text-[#0f172a] hover:bg-[#f1f5f9]'
+                ? 'hybrid-card-dark text-[#cbd5e1] hover:text-white'
+                : 'hybrid-card-light text-[#0f172a] hover:bg-[#f1f5f9]'
             }`}
           >
             <RotateCcw size={13} />
@@ -1028,8 +1026,8 @@ export function App() {
             onClick={copySnapshot}
             className={`flex-1 py-2.5 px-3 sm:py-3 sm:px-4 rounded-2xl font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:scale-95 ${
               isDark
-                ? 'bg-[#ff5722] text-white apple-button-dark'
-                : 'bg-[#ff5722] text-white apple-button-light'
+                ? 'hybrid-button-dark text-white'
+                : 'hybrid-button-light text-white'
             }`}
           >
             {copied ? <Check size={13} /> : <Copy size={13} />}
@@ -1056,8 +1054,8 @@ export function App() {
         <div
           className={`fixed bottom-6 left-1/2 -translate-x-1/2 font-mono font-bold text-xs px-5 py-2.5 rounded-2xl shadow-2xl z-50 ${
             isDark
-              ? 'bg-[#18202e] text-white border border-[#ff5722] apple-button-dark'
-              : 'bg-white text-[#0f172a] border border-black/10 apple-card-light'
+              ? 'bg-[#18202e] text-white border border-[#ff5722] hybrid-button-dark'
+              : 'bg-white text-[#0f172a] border-2 border-[#0f172a] hybrid-card-light'
           }`}
         >
           {toastMsg}

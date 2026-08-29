@@ -16,96 +16,106 @@
   }
 }
 
-/* Apple-style Realistic Light Depth: Top specular rim light + ambient soft contact shadow */
-.apple-card-light {
+/* =========================================================
+   HYBRID NEO-TACTILE + APPLE REALISM DEPTH SYSTEM
+   Solid crisp outer silhouette + Physical specular micro-bevel
+   ========================================================= */
+
+/* Hybrid Main Cards (Light Mode) */
+.hybrid-card-light {
   background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 2px solid #0f172a;
   box-shadow: 
-    inset 0 1.5px 0.5px rgba(255, 255, 255, 0.9),
-    inset 0 -1.5px 1px rgba(0, 0, 0, 0.03),
-    0 1px 3px rgba(15, 23, 42, 0.05),
-    0 8px 20px -4px rgba(15, 23, 42, 0.08);
+    inset 0 1.5px 0.5px rgba(255, 255, 255, 0.95),
+    inset 0 -1.5px 1px rgba(15, 23, 42, 0.04),
+    3.5px 3.5px 0px #0f172a;
 }
 
-.apple-inset-light {
+/* Hybrid Inset Wells / Trays (Light Mode) */
+.hybrid-inset-light {
   background: #f1f5f9;
-  border: 1px solid rgba(15, 23, 42, 0.06);
+  border: 1.5px solid #0f172a;
   box-shadow: 
-    inset 0 1.5px 2.5px rgba(15, 23, 42, 0.06),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.8),
-    0 1px 0 rgba(255, 255, 255, 0.6);
+    inset 0 2px 3px rgba(15, 23, 42, 0.07),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.9);
 }
 
-.apple-button-light {
+/* Hybrid Buttons (Light Mode) */
+.hybrid-button-light {
+  background: #ff5722;
+  border: 2px solid #0f172a;
   box-shadow: 
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.4),
-    inset 0 -1.5px 1px rgba(0, 0, 0, 0.15),
-    0 2px 5px rgba(255, 87, 34, 0.3);
+    inset 0 1.5px 0.5px rgba(255, 255, 255, 0.45),
+    inset 0 -2px 1px rgba(0, 0, 0, 0.18),
+    2.5px 2.5px 0px #0f172a;
 }
 
-/* Apple-style Realistic Dark Depth: Micro-chamfer top highlight + deep obsidian ambient occlusion */
-.apple-card-dark {
+/* Hybrid Main Cards (Dark Mode) */
+.hybrid-card-dark {
   background: #111722;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1.5px solid #233044;
   box-shadow: 
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0.5px rgba(0, 0, 0, 0.4),
-    0 4px 20px -2px rgba(0, 0, 0, 0.7),
-    0 0 0 1px rgba(255, 255, 255, 0.03);
+    inset 0 1.5px 0.5px rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0.5px rgba(0, 0, 0, 0.5),
+    0 10px 25px -4px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
-.apple-inset-dark {
+/* Hybrid Inset Wells / Trays (Dark Mode) */
+.hybrid-inset-dark {
   background: #18202e;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1.5px solid #28374d;
   box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.4),
-    inset 0 -1px 0.5px rgba(255, 255, 255, 0.05),
-    0 1px 0 rgba(255, 255, 255, 0.03);
+    inset 0 2px 4px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 0.5px rgba(255, 255, 255, 0.06);
 }
 
-.apple-button-dark {
+/* Hybrid Buttons (Dark Mode) */
+.hybrid-button-dark {
+  background: #ff5722;
+  border: 1.5px solid #ff784e;
   box-shadow: 
-    inset 0 1px 0.5px rgba(255, 255, 255, 0.35),
-    inset 0 -1.5px 1px rgba(0, 0, 0, 0.3),
-    0 4px 14px rgba(255, 87, 34, 0.4);
+    inset 0 1.5px 0.5px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 1px rgba(0, 0, 0, 0.35),
+    0 4px 14px rgba(255, 87, 34, 0.45);
 }
 
-/* Hero Safe Glow (Realistic Glass / Anodized Aluminum Feel) */
+/* Hero Safe Glow (Hybrid Neo-Apple) */
 .hero-safe-light {
-  background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
-  border: 1px solid #10b981;
+  background: linear-gradient(180deg, #dcfce7 0%, #bbf7d0 100%);
+  border: 2px solid #0f172a;
   box-shadow: 
     inset 0 1.5px 1px rgba(255, 255, 255, 0.9),
-    inset 0 -2px 1px rgba(16, 185, 129, 0.2),
-    0 8px 24px -4px rgba(16, 185, 129, 0.2);
+    inset 0 -2px 1px rgba(16, 185, 129, 0.25),
+    3.5px 3.5px 0px #0f172a;
 }
 
 .hero-safe-dark {
   background: linear-gradient(180deg, #07291a 0%, #041a10 100%);
-  border: 1px solid #10b981;
+  border: 1.5px solid #10b981;
   box-shadow: 
-    inset 0 1px 0.5px rgba(52, 211, 153, 0.3),
+    inset 0 1.5px 0.5px rgba(52, 211, 153, 0.4),
     inset 0 -2px 2px rgba(0, 0, 0, 0.6),
-    0 8px 28px -4px rgba(16, 185, 129, 0.25);
+    0 10px 28px -4px rgba(16, 185, 129, 0.3);
 }
 
 /* Hero Danger Glow */
 .hero-danger-light {
-  background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
-  border: 1px solid #f43f5e;
+  background: linear-gradient(180deg, #ffe4e6 0%, #fecdd3 100%);
+  border: 2px solid #0f172a;
   box-shadow: 
     inset 0 1.5px 1px rgba(255, 255, 255, 0.9),
-    inset 0 -2px 1px rgba(244, 63, 94, 0.2),
-    0 8px 24px -4px rgba(244, 63, 94, 0.2);
+    inset 0 -2px 1px rgba(244, 63, 94, 0.25),
+    3.5px 3.5px 0px #0f172a;
 }
 
 .hero-danger-dark {
   background: linear-gradient(180deg, #320b13 0%, #1f050b 100%);
-  border: 1px solid #f43f5e;
+  border: 1.5px solid #f43f5e;
   box-shadow: 
-    inset 0 1px 0.5px rgba(251, 113, 133, 0.3),
+    inset 0 1.5px 0.5px rgba(251, 113, 133, 0.4),
     inset 0 -2px 2px rgba(0, 0, 0, 0.6),
-    0 8px 28px -4px rgba(244, 63, 94, 0.25);
+    0 10px 28px -4px rgba(244, 63, 94, 0.3);
 }
 
 /* College Notebook Paper & Blueprint Grid Backgrounds */
