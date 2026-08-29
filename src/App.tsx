@@ -83,9 +83,9 @@ export function App() {
   }, []);
 
   // Safe clamping for single calculation
-  const safeHeld = Math.max(1, held);
+  const safeHeld = Math.max(1, Math.min(999, held));
   const safeAttended = Math.max(0, Math.min(attended, safeHeld));
-  const safeThreshold = Math.max(50, Math.min(99, threshold));
+  const safeThreshold = Math.max(50, Math.min(95, threshold));
   const currentPct = safeHeld > 0 ? (safeAttended / safeHeld) * 100 : 100;
   const missed = safeHeld - safeAttended;
   const margin = currentPct - safeThreshold;
@@ -126,7 +126,7 @@ export function App() {
   }, [maxBunk, neededClasses, isSafe]);
 
   const handleHeldStep = (delta: number) => {
-    const next = Math.max(1, safeHeld + delta);
+    const next = Math.max(1, Math.min(999, safeHeld + delta));
     setHeld(next);
     if (safeAttended > next) setAttended(next);
     setSimDiff(null);
@@ -139,19 +139,21 @@ export function App() {
   };
 
   const handleHeldDirectChange = (val: string) => {
-    const parsed = parseInt(val, 10);
-    if (isNaN(parsed)) {
+    const cleaned = val.replace(/\D/g, '').slice(0, 3);
+    const parsed = parseInt(cleaned, 10);
+    if (isNaN(parsed) || parsed < 1) {
       setHeld(1);
       return;
     }
-    const next = Math.max(1, parsed);
+    const next = Math.min(999, parsed);
     setHeld(next);
     if (safeAttended > next) setAttended(next);
     setSimDiff(null);
   };
 
   const handleAttendedDirectChange = (val: string) => {
-    const parsed = parseInt(val, 10);
+    const cleaned = val.replace(/\D/g, '').slice(0, 3);
+    const parsed = parseInt(cleaned, 10);
     if (isNaN(parsed)) {
       setAttended(0);
       return;
@@ -230,17 +232,24 @@ export function App() {
     setSubjects(prev =>
       prev.map(s => {
         if (s.id === id) {
-          const updated = { ...s, [field]: val };
-          const sHeld = Math.max(1, updated.held);
+          const updated = { ...s };
+
+          if (field === 'name') {
+            updated.name = String(val).slice(0, 40); // 40 char limit for course names
+          }
           if (field === 'held') {
+            const parsed = typeof val === 'number' ? val : parseInt(String(val).replace(/\D/g, '').slice(0, 3), 10) || 1;
+            const sHeld = Math.max(1, Math.min(999, parsed));
             updated.held = sHeld;
             if (updated.attended > sHeld) updated.attended = sHeld;
           }
           if (field === 'attended') {
-            updated.attended = Math.max(0, Math.min(updated.attended, sHeld));
+            const parsed = typeof val === 'number' ? val : parseInt(String(val).replace(/\D/g, '').slice(0, 3), 10) || 0;
+            updated.attended = Math.max(0, Math.min(parsed, updated.held));
           }
           if (field === 'threshold') {
-            updated.threshold = Math.max(50, Math.min(99, updated.threshold));
+            const parsed = typeof val === 'number' ? val : parseInt(String(val).replace(/\D/g, '').slice(0, 2), 10) || 75;
+            updated.threshold = Math.max(50, Math.min(95, parsed));
           }
           return updated;
         }
@@ -258,7 +267,7 @@ export function App() {
           const updated = { ...s };
 
           if (field === 'held') {
-            updated.held = Math.max(1, nextVal);
+            updated.held = Math.max(1, Math.min(999, nextVal));
             if (updated.attended > updated.held) updated.attended = updated.held;
           } else if (field === 'attended') {
             updated.attended = Math.max(0, Math.min(nextVal, s.held));
@@ -273,6 +282,10 @@ export function App() {
   };
 
   const addSubject = () => {
+    if (subjects.length >= 12) {
+      showToast("Maximum 12 courses allowed");
+      return;
+    }
     setSubjects(prev => [
       ...prev,
       {
@@ -565,11 +578,13 @@ export function App() {
                       <Minus size={14} />
                     </button>
                     
-                    {/* Direct typeable input */}
+                    {/* Direct typeable input with 3-digit length limit (1-999) */}
                     <input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={3}
                       value={safeHeld}
-                      min="1"
                       onChange={e => handleHeldDirectChange(e.target.value)}
                       className={`w-12 sm:w-16 text-center font-mono font-black text-xl sm:text-2xl bg-transparent outline-none border-b-2 border-transparent focus:border-[#ff5722] transition-colors ${
                         isDark ? 'text-white' : 'text-[#0f172a]'
@@ -615,11 +630,13 @@ export function App() {
                       <Minus size={14} />
                     </button>
                     
-                    {/* Direct typeable input */}
+                    {/* Direct typeable input with 3-digit length limit (0-999) */}
                     <input
-                      type="number"
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={3}
                       value={safeAttended}
-                      min="0"
                       onChange={e => handleAttendedDirectChange(e.target.value)}
                       className={`w-12 sm:w-16 text-center font-mono font-black text-xl sm:text-2xl bg-transparent outline-none border-b-2 border-transparent focus:border-[#ff5722] transition-colors ${
                         isDark ? 'text-white' : 'text-[#0f172a]'
@@ -836,9 +853,9 @@ export function App() {
 
             <div className="flex flex-col gap-3">
               {subjects.map(s => {
-                const sHeld = Math.max(1, s.held);
+                const sHeld = Math.max(1, Math.min(999, s.held));
                 const sAttended = Math.max(0, Math.min(s.attended, sHeld));
-                const sThreshold = Math.max(50, Math.min(99, s.threshold));
+                const sThreshold = Math.max(50, Math.min(95, s.threshold));
                 const sPct = (sAttended / sHeld) * 100;
                 const sRatio = sThreshold / 100;
                 const sSafe = sPct >= sThreshold;
@@ -861,7 +878,9 @@ export function App() {
                     <div className="flex items-center gap-2">
                       <input
                         type="text"
+                        maxLength={40}
                         value={s.name}
+                        placeholder="Subject name"
                         onChange={e => updateSubject(s.id, 'name', e.target.value)}
                         className={`flex-1 text-xs font-bold px-3 py-1.5 sm:py-2 rounded-xl border outline-none ${
                           isDark
@@ -878,7 +897,7 @@ export function App() {
                       </button>
                     </div>
 
-                    {/* TACTILE + DIRECT TYPEABLE COUNTER CELLS */}
+                    {/* TACTILE + DIRECT TYPEABLE COUNTER CELLS WITH STRICT LIMITS */}
                     <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                       
                       {/* HELD COUNTER */}
@@ -901,10 +920,12 @@ export function App() {
                             <Minus size={11} />
                           </button>
                           <input
-                            type="number"
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            maxLength={3}
                             value={sHeld}
-                            min="1"
-                            onChange={e => updateSubject(s.id, 'held', parseInt(e.target.value, 10) || 1)}
+                            onChange={e => updateSubject(s.id, 'held', e.target.value)}
                             className="w-8 sm:w-10 text-center font-mono font-black text-xs bg-transparent outline-none"
                           />
                           <button
@@ -937,10 +958,12 @@ export function App() {
                             <Minus size={11} />
                           </button>
                           <input
-                            type="number"
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            maxLength={3}
                             value={sAttended}
-                            min="0"
-                            onChange={e => updateSubject(s.id, 'attended', parseInt(e.target.value, 10) || 0)}
+                            onChange={e => updateSubject(s.id, 'attended', e.target.value)}
                             className="w-8 sm:w-10 text-center font-mono font-black text-xs bg-transparent outline-none"
                           />
                           <button
