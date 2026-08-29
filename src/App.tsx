@@ -17,7 +17,6 @@ interface Subject {
 
 export function App() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLSpanElement>(null);
   const isInitialMount = useRef<boolean>(true);
 
@@ -101,16 +100,16 @@ export function App() {
     ? Math.max(0, Math.ceil((thresholdRatio * safeHeld - safeAttended) / (1 - thresholdRatio)))
     : 0;
 
-  // GSAP Initial entrance animation
+  // Safe GSAP Page Entrance (using fromTo with explicit clearProps so elements NEVER get stuck hidden)
   useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-    tl.from('header', { y: -16, opacity: 0, duration: 0.4 })
-      .from('.tab-bar', { scale: 0.96, opacity: 0, duration: 0.3 }, '-=0.2')
-      .from(heroRef.current, { y: 20, opacity: 0, duration: 0.45 }, '-=0.15')
-      .from('.anim-card', { y: 16, opacity: 0, stagger: 0.06, duration: 0.35 }, '-=0.25');
+    gsap.fromTo(
+      '.anim-item',
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', clearProps: 'all' }
+    );
   }, { scope: containerRef });
 
-  // GSAP Number bump animation strictly on subsequent user value changes
+  // Number bump animation on subsequent user value changes
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
@@ -121,7 +120,7 @@ export function App() {
       gsap.fromTo(
         numberRef.current,
         { scale: 1.25, y: -4 },
-        { scale: 1, y: 0, duration: 0.32, ease: 'back.out(2)', clearProps: 'all' }
+        { scale: 1, y: 0, duration: 0.28, ease: 'back.out(2)', clearProps: 'all' }
       );
     }
   }, [maxBunk, neededClasses, isSafe]);
@@ -262,7 +261,7 @@ export function App() {
       <div className="w-full max-w-[500px] flex flex-col gap-4">
         
         {/* TOP BRAND NAV BAR */}
-        <header className="flex items-center justify-between px-1">
+        <header className="anim-item flex items-center justify-between px-1">
           <div className="flex items-center gap-2.5">
             <div
               className={`w-9 h-9 rounded-2xl flex items-center justify-center font-brand font-black text-lg border ${
@@ -356,7 +355,7 @@ export function App() {
 
         {/* TABS SELECTOR */}
         <div
-          className={`tab-bar flex p-1 rounded-2xl border ${
+          className={`anim-item flex p-1 rounded-2xl border ${
             isDark
               ? 'bg-[#111722] border-[#1d2738] neo-box-sm-dark'
               : 'bg-white border-[#0f172a] neo-box-sm-light'
@@ -396,8 +395,7 @@ export function App() {
             
             {/* HERO OUTCOME BANNER */}
             <section
-              ref={heroRef}
-              className={`p-6 sm:p-8 rounded-3xl border-2 transition-all relative overflow-hidden ${
+              className={`anim-item p-6 sm:p-8 rounded-3xl border-2 transition-all relative overflow-hidden ${
                 isDark
                   ? isSafe
                     ? 'bg-[#062417] border-[#10b981] text-[#f8fafc] neo-box-dark'
@@ -464,7 +462,7 @@ export function App() {
 
             {/* CONTROLS CARD */}
             <section
-              className={`anim-card p-5 rounded-3xl border flex flex-col gap-4 ${
+              className={`anim-item p-5 rounded-3xl border flex flex-col gap-4 ${
                 isDark
                   ? 'bg-[#111722] border-[#1d2738] neo-box-dark'
                   : 'bg-white border-[#0f172a] neo-box-light'
@@ -664,7 +662,7 @@ export function App() {
 
             {/* WHAT-IF SIMULATOR DECK */}
             <section
-              className={`anim-card p-4 sm:p-5 rounded-3xl border flex flex-col gap-3 ${
+              className={`anim-item p-4 sm:p-5 rounded-3xl border flex flex-col gap-3 ${
                 isDark
                   ? 'bg-[#111722] border-[#1d2738] neo-box-dark'
                   : 'bg-white border-[#0f172a] neo-box-light'
@@ -869,7 +867,7 @@ export function App() {
         )}
 
         {/* BOTTOM ACTION BAR */}
-        <div className="flex gap-2">
+        <div className="anim-item flex gap-2">
           <button
             type="button"
             onClick={resetAll}
