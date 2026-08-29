@@ -18,20 +18,20 @@
 
 /* Light mode crisp shadow */
 .neo-box-light {
-  box-shadow: 4px 4px 0px #0f172a;
+  box-shadow: 3.5px 3.5px 0px #0f172a;
 }
 
 .neo-box-sm-light {
-  box-shadow: 2.5px 2.5px 0px #0f172a;
+  box-shadow: 2px 2px 0px #0f172a;
 }
 
 /* Dark mode premium obsidian bevel border and subtle depth */
 .neo-box-dark {
-  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .neo-box-sm-dark {
-  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 /* College Notebook Paper & Blueprint Grid Backgrounds */
@@ -40,7 +40,7 @@
   background-image: 
     linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-size: 28px 28px;
 }
 
 .bg-notebook-dark {
@@ -48,7 +48,17 @@
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-size: 28px 28px;
+}
+
+/* Hide default number spinner arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 /* Custom Tactile Slider Styling */
@@ -65,18 +75,18 @@ input[type="range"].bunkim-slider:focus {
 
 /* WebKit (Chrome, Safari, Edge) */
 input[type="range"].bunkim-slider::-webkit-slider-runnable-track {
-  height: 10px;
+  height: 8px;
   border-radius: 9999px;
 }
 
 input[type="range"].bunkim-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  height: 24px;
-  width: 24px;
+  height: 22px;
+  width: 22px;
   border-radius: 50%;
   background: #ff5722;
-  border: 3px solid #ffffff;
+  border: 2.5px solid #ffffff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   margin-top: -7px;
   transition: transform 0.15s ease, background-color 0.15s ease;
@@ -93,16 +103,16 @@ input[type="range"].bunkim-slider::-webkit-slider-thumb:active {
 
 /* Firefox */
 input[type="range"].bunkim-slider::-moz-range-track {
-  height: 10px;
+  height: 8px;
   border-radius: 9999px;
 }
 
 input[type="range"].bunkim-slider::-moz-range-thumb {
-  height: 22px;
-  width: 22px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
   background: #ff5722;
-  border: 3px solid #ffffff;
+  border: 2.5px solid #ffffff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   transition: transform 0.15s ease;
 }

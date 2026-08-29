@@ -138,6 +138,29 @@ export function App() {
     setSimDiff(null);
   };
 
+  const handleHeldDirectChange = (val: string) => {
+    const parsed = parseInt(val, 10);
+    if (isNaN(parsed)) {
+      setHeld(1);
+      return;
+    }
+    const next = Math.max(1, parsed);
+    setHeld(next);
+    if (safeAttended > next) setAttended(next);
+    setSimDiff(null);
+  };
+
+  const handleAttendedDirectChange = (val: string) => {
+    const parsed = parseInt(val, 10);
+    if (isNaN(parsed)) {
+      setAttended(0);
+      return;
+    }
+    const next = Math.max(0, Math.min(parsed, safeHeld));
+    setAttended(next);
+    setSimDiff(null);
+  };
+
   const simulateImpact = (type: 'miss' | 'attend') => {
     const nextHeld = safeHeld + 1;
     const nextAttended = type === 'attend' ? safeAttended + 1 : safeAttended;
@@ -278,19 +301,19 @@ export function App() {
   return (
     <main
       ref={containerRef}
-      className={`min-h-screen transition-colors duration-200 flex flex-col items-center justify-start p-4 sm:p-8 pb-24 ${
+      className={`min-h-screen transition-colors duration-200 flex flex-col items-center justify-start px-3 py-4 sm:p-8 pb-20 ${
         isDark
           ? 'bg-[#080b10] text-[#f8fafc] bg-notebook-dark'
           : 'bg-[#f8fafc] text-[#0f172a] bg-notebook-light'
       }`}
     >
-      <div className="w-full max-w-[520px] flex flex-col gap-4">
+      <div className="w-full max-w-[500px] flex flex-col gap-3 sm:gap-4">
         
-        {/* TOP BRAND NAV BAR */}
+        {/* TOP BRAND NAV BAR - COMPACT ON MOBILE */}
         <header className="anim-item flex items-center justify-between px-1">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <div
-              className={`w-9 h-9 rounded-2xl flex items-center justify-center font-brand font-black text-lg border ${
+              className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl flex items-center justify-center font-brand font-black text-base sm:text-lg border ${
                 isDark
                   ? 'bg-[#ff5722] text-white border-[#ff784e] neo-box-sm-dark'
                   : 'bg-[#ff5722] text-white border-[#0f172a] neo-box-sm-light'
@@ -299,19 +322,19 @@ export function App() {
               b
             </div>
             <div>
-              <span className="font-brand font-black text-2xl tracking-tighter block leading-none">
+              <span className="font-brand font-black text-xl sm:text-2xl tracking-tighter block leading-none">
                 bunkim
               </span>
-              <span className={`text-[11px] font-mono font-bold tracking-tight ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
+              <span className={`text-[10px] sm:text-[11px] font-mono font-bold tracking-tight block ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                 attendance cushion
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* THEME SELECTOR */}
             <div
-              className={`flex p-1 rounded-2xl border ${
+              className={`flex p-0.5 sm:p-1 rounded-xl sm:rounded-2xl border ${
                 isDark
                   ? 'bg-[#111722] border-[#1d2738] neo-box-sm-dark'
                   : 'bg-white border-[#0f172a] neo-box-sm-light'
@@ -321,37 +344,37 @@ export function App() {
                 type="button"
                 onClick={() => applyTheme('light')}
                 title="Light mode"
-                className={`p-1.5 rounded-xl transition-all ${
+                className={`p-1.5 rounded-lg sm:rounded-xl transition-all ${
                   theme === 'light'
                     ? 'bg-[#ff5722] text-white shadow-xs'
                     : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
-                <Sun size={14} />
+                <Sun size={13} />
               </button>
               <button
                 type="button"
                 onClick={() => applyTheme('dark')}
                 title="Dark mode"
-                className={`p-1.5 rounded-xl transition-all ${
+                className={`p-1.5 rounded-lg sm:rounded-xl transition-all ${
                   theme === 'dark'
                     ? 'bg-[#ff5722] text-white shadow-xs'
                     : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
-                <Moon size={14} />
+                <Moon size={13} />
               </button>
               <button
                 type="button"
                 onClick={() => applyTheme('system')}
                 title="System preference"
-                className={`p-1.5 rounded-xl transition-all ${
+                className={`p-1.5 rounded-lg sm:rounded-xl transition-all ${
                   theme === 'system'
                     ? 'bg-[#ff5722] text-white shadow-xs'
                     : isDark ? 'text-[#94a3b8] hover:text-white' : 'text-[#475569] hover:text-[#0f172a]'
                 }`}
               >
-                <Laptop size={14} />
+                <Laptop size={13} />
               </button>
             </div>
 
@@ -359,7 +382,7 @@ export function App() {
             <select
               value={lang}
               onChange={e => setLang(e.target.value)}
-              className={`text-xs font-mono font-bold px-3 py-2 rounded-2xl border outline-none cursor-pointer transition-colors ${
+              className={`text-xs font-mono font-bold px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl sm:rounded-2xl border outline-none cursor-pointer transition-colors ${
                 isDark
                   ? 'bg-[#111722] border-[#1d2738] text-[#f8fafc] hover:border-[#384863] neo-box-sm-dark'
                   : 'bg-white border-[#0f172a] text-[#0f172a] neo-box-sm-light'
@@ -390,7 +413,7 @@ export function App() {
           <button
             type="button"
             onClick={() => setTab('calc')}
-            className={`flex-1 py-2.5 rounded-xl font-brand font-black text-xs uppercase tracking-wider transition-all ${
+            className={`flex-1 py-2 sm:py-2.5 rounded-xl font-brand font-black text-xs uppercase tracking-wider transition-all ${
               tab === 'calc'
                 ? isDark
                   ? 'bg-[#ff5722] text-white shadow-xs'
@@ -403,7 +426,7 @@ export function App() {
           <button
             type="button"
             onClick={() => setTab('roster')}
-            className={`flex-1 py-2.5 rounded-xl font-brand font-black text-xs uppercase tracking-wider transition-all ${
+            className={`flex-1 py-2 sm:py-2.5 rounded-xl font-brand font-black text-xs uppercase tracking-wider transition-all ${
               tab === 'roster'
                 ? isDark
                   ? 'bg-[#ff5722] text-white shadow-xs'
@@ -417,11 +440,11 @@ export function App() {
 
         {/* TAB 1: QUICK CUSHION */}
         {tab === 'calc' && (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3 sm:gap-4">
             
             {/* HERO OUTCOME BANNER */}
             <section
-              className={`anim-item p-6 sm:p-8 rounded-3xl border-2 transition-all relative overflow-hidden ${
+              className={`anim-item p-5 sm:p-7 rounded-2xl sm:rounded-3xl border-2 transition-all relative overflow-hidden ${
                 isDark
                   ? isSafe
                     ? 'bg-[#062417] border-[#10b981] text-[#f8fafc] neo-box-dark'
@@ -431,9 +454,9 @@ export function App() {
                     : 'bg-[#ffe4e6] border-[#0f172a] text-[#0f172a] neo-box-light'
               }`}
             >
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
                 <div
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-black border ${
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono font-black border ${
                     isSafe
                       ? isDark
                         ? 'bg-[#10b981]/25 text-[#34d399] border-[#10b981]/60'
@@ -443,12 +466,12 @@ export function App() {
                         : 'bg-[#f43f5e] text-white border-[#0f172a]'
                   }`}
                 >
-                  {isSafe ? <Sparkles size={13} /> : <AlertCircle size={13} />}
+                  {isSafe ? <Sparkles size={12} /> : <AlertCircle size={12} />}
                   <span>{isSafe ? t.heroSafeBadge : t.heroDangerBadge}</span>
                 </div>
 
                 <div
-                  className={`font-mono font-black text-xs px-2.5 py-1 rounded-lg border ${
+                  className={`font-mono font-black text-[11px] sm:text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg border ${
                     isDark
                       ? 'bg-[#080b10]/70 text-[#cbd5e1] border-white/10'
                       : 'bg-black/10 text-[#0f172a] border-[#0f172a]/20'
@@ -459,24 +482,24 @@ export function App() {
               </div>
 
               <div
-                className={`text-xs sm:text-sm font-bold mb-1 ${
+                className={`text-xs sm:text-sm font-bold ${
                   isDark ? 'text-[#cbd5e1]' : 'text-[#1e293b]'
                 }`}
               >
                 {isSafe ? t.heroSafePre : t.heroDangerPre}
               </div>
 
-              <div className="flex items-baseline gap-2 my-1">
-                <span ref={numberRef} className="font-mono font-black text-6xl sm:text-7xl tracking-tighter leading-none inline-block">
+              <div className="flex items-baseline gap-2 my-0.5">
+                <span ref={numberRef} className="font-mono font-black text-5xl sm:text-7xl tracking-tighter leading-none inline-block">
                   {isSafe ? maxBunk : neededClasses}
                 </span>
-                <span className="font-brand font-black text-xl sm:text-2xl uppercase tracking-tight">
+                <span className="font-brand font-black text-lg sm:text-2xl uppercase tracking-tight">
                   {isSafe ? t.heroSafeUnit : t.heroDangerUnit}
                 </span>
               </div>
 
               <p
-                className={`text-xs sm:text-sm font-medium mt-2 max-w-[380px] leading-relaxed ${
+                className={`text-xs sm:text-sm font-medium mt-1.5 max-w-[380px] leading-relaxed ${
                   isDark ? 'text-[#cbd5e1]' : 'text-[#334155]'
                 }`}
               >
@@ -486,14 +509,14 @@ export function App() {
               </p>
 
               {/* Real-time visual progress bar */}
-              <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 flex flex-col gap-1.5">
-                <div className="flex justify-between text-[11px] font-mono font-bold">
+              <div className="mt-3.5 pt-3 border-t border-black/10 dark:border-white/10 flex flex-col gap-1">
+                <div className="flex justify-between text-[10px] sm:text-[11px] font-mono font-bold">
                   <span className={isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}>Target: {safeThreshold}%</span>
                   <span className={isSafe ? 'text-[#10b981] dark:text-[#34d399]' : 'text-[#f43f5e] dark:text-[#fb7185]'}>
                     Current: {currentPct.toFixed(1)}%
                   </span>
                 </div>
-                <div className="w-full h-2.5 rounded-full bg-black/10 dark:bg-black/50 overflow-hidden relative">
+                <div className="w-full h-2 sm:h-2.5 rounded-full bg-black/10 dark:bg-black/50 overflow-hidden relative">
                   <div
                     className={`h-full transition-all duration-300 rounded-full ${
                       isSafe
@@ -508,24 +531,24 @@ export function App() {
 
             {/* CONTROLS CARD */}
             <section
-              className={`anim-item p-5 rounded-3xl border flex flex-col gap-4 ${
+              className={`anim-item p-4 sm:p-5 rounded-2xl sm:rounded-3xl border flex flex-col gap-3.5 sm:gap-4 ${
                 isDark
                   ? 'bg-[#111722] border-[#1d2738] neo-box-dark'
                   : 'bg-white border-[#0f172a] neo-box-light'
               }`}
             >
-              {/* TWO BIG NUMBER CONTROLLERS */}
-              <div className="grid grid-cols-2 gap-3">
+              {/* TWO HYBRID (STEPPER + DIRECT TYPEABLE) NUMBER CONTROLLERS */}
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                 
                 {/* CLASSES HELD */}
                 <div
-                  className={`p-3.5 rounded-2xl border flex flex-col gap-2 ${
+                  className={`p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border flex flex-col gap-1.5 sm:gap-2 ${
                     isDark
                       ? 'bg-[#18202e] border-[#243044]'
                       : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <span className={`text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
+                  <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.heldLabel}
                   </span>
                   
@@ -533,42 +556,49 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleHeldStep(-1)}
-                      className={`w-10 h-10 rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
                           ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
                           : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
                       }`}
                     >
-                      <Minus size={16} />
+                      <Minus size={14} />
                     </button>
                     
-                    <span className="font-mono font-black text-2xl px-1">
-                      {safeHeld}
-                    </span>
+                    {/* Direct typeable input */}
+                    <input
+                      type="number"
+                      value={safeHeld}
+                      min="1"
+                      onChange={e => handleHeldDirectChange(e.target.value)}
+                      className={`w-12 sm:w-16 text-center font-mono font-black text-xl sm:text-2xl bg-transparent outline-none border-b-2 border-transparent focus:border-[#ff5722] transition-colors ${
+                        isDark ? 'text-white' : 'text-[#0f172a]'
+                      }`}
+                    />
                     
                     <button
                       type="button"
                       onClick={() => handleHeldStep(1)}
-                      className={`w-10 h-10 rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
                           ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
                           : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
                       }`}
                     >
-                      <Plus size={16} />
+                      <Plus size={14} />
                     </button>
                   </div>
                 </div>
 
                 {/* CLASSES ATTENDED */}
                 <div
-                  className={`p-3.5 rounded-2xl border flex flex-col gap-2 ${
+                  className={`p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border flex flex-col gap-1.5 sm:gap-2 ${
                     isDark
                       ? 'bg-[#18202e] border-[#243044]'
                       : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <span className={`text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
+                  <span className={`text-[10px] sm:text-[11px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.attendedLabel}
                   </span>
                   
@@ -576,29 +606,36 @@ export function App() {
                     <button
                       type="button"
                       onClick={() => handleAttendedStep(-1)}
-                      className={`w-10 h-10 rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
                           ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
                           : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
                       }`}
                     >
-                      <Minus size={16} />
+                      <Minus size={14} />
                     </button>
                     
-                    <span className="font-mono font-black text-2xl px-1">
-                      {safeAttended}
-                    </span>
+                    {/* Direct typeable input */}
+                    <input
+                      type="number"
+                      value={safeAttended}
+                      min="0"
+                      onChange={e => handleAttendedDirectChange(e.target.value)}
+                      className={`w-12 sm:w-16 text-center font-mono font-black text-xl sm:text-2xl bg-transparent outline-none border-b-2 border-transparent focus:border-[#ff5722] transition-colors ${
+                        isDark ? 'text-white' : 'text-[#0f172a]'
+                      }`}
+                    />
                     
                     <button
                       type="button"
                       onClick={() => handleAttendedStep(1)}
-                      className={`w-10 h-10 rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
+                      className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl border flex items-center justify-center font-black transition-all active:scale-90 ${
                         isDark
                           ? 'bg-[#111722] border-[#2d3b54] text-white hover:bg-[#ff5722]'
                           : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
                       }`}
                     >
-                      <Plus size={16} />
+                      <Plus size={14} />
                     </button>
                   </div>
                 </div>
@@ -607,7 +644,7 @@ export function App() {
 
               {/* REFINED TACTILE THRESHOLD SLIDER */}
               <div
-                className={`p-4 rounded-2xl border flex flex-col gap-3.5 ${
+                className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border flex flex-col gap-2.5 sm:gap-3.5 ${
                   isDark
                     ? 'bg-[#18202e] border-[#243044]'
                     : 'bg-[#f1f5f9] border-[#cbd5e1]'
@@ -617,13 +654,13 @@ export function App() {
                   <span className={`text-xs font-brand font-black uppercase tracking-wider ${isDark ? 'text-[#cbd5e1]' : 'text-[#1e293b]'}`}>
                     {t.targetLabel}
                   </span>
-                  <span className="font-mono font-black text-lg text-[#ff5722]">
+                  <span className="font-mono font-black text-base sm:text-lg text-[#ff5722]">
                     {safeThreshold}%
                   </span>
                 </div>
 
                 {/* Custom Dual-Tone Track Slider */}
-                <div className="relative flex items-center w-full my-1">
+                <div className="relative flex items-center w-full my-0.5">
                   <input
                     type="range"
                     min="50"
@@ -638,11 +675,11 @@ export function App() {
                         ? `linear-gradient(to right, #ff5722 0%, #ff5722 ${sliderFillPercent}%, #080b10 ${sliderFillPercent}%, #080b10 100%)`
                         : `linear-gradient(to right, #ff5722 0%, #ff5722 ${sliderFillPercent}%, #cbd5e1 ${sliderFillPercent}%, #cbd5e1 100%)`
                     }}
-                    className="bunkim-slider w-full h-2.5 rounded-full border border-black/10 dark:border-white/10"
+                    className="bunkim-slider w-full h-2 rounded-full border border-black/10 dark:border-white/10"
                   />
                 </div>
 
-                <div className="flex gap-2 justify-between">
+                <div className="flex gap-1.5 sm:gap-2 justify-between">
                   {[75, 80, 85, 65].map(p => (
                     <button
                       key={p}
@@ -651,7 +688,7 @@ export function App() {
                         setThreshold(p);
                         setSimDiff(null);
                       }}
-                      className={`flex-1 py-2 text-xs font-mono font-black rounded-xl border transition-all active:scale-95 ${
+                      className={`flex-1 py-1.5 sm:py-2 text-xs font-mono font-black rounded-lg sm:rounded-xl border transition-all active:scale-95 ${
                         safeThreshold === p
                           ? 'bg-[#ff5722] text-white border-[#ff5722] shadow-sm'
                           : isDark
@@ -666,43 +703,43 @@ export function App() {
               </div>
 
               {/* THREE SUMMARY CHIPS WITH HIGH CONTRAST */}
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                 <div
-                  className={`p-3 rounded-2xl border text-center ${
+                  className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border text-center ${
                     isDark ? 'bg-[#18202e] border-[#243044]' : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <div className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
+                  <div className={`text-[9px] sm:text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.pctLabel}
                   </div>
-                  <div className="font-mono font-black text-base sm:text-lg mt-0.5">
+                  <div className="font-mono font-black text-sm sm:text-lg mt-0.5">
                     {currentPct.toFixed(1)}%
                   </div>
                 </div>
 
                 <div
-                  className={`p-3 rounded-2xl border text-center ${
+                  className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border text-center ${
                     isDark ? 'bg-[#18202e] border-[#243044]' : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <div className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
+                  <div className={`text-[9px] sm:text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.missedLabel}
                   </div>
-                  <div className="font-mono font-black text-base sm:text-lg mt-0.5">
+                  <div className="font-mono font-black text-sm sm:text-lg mt-0.5">
                     {missed}
                   </div>
                 </div>
 
                 <div
-                  className={`p-3 rounded-2xl border text-center ${
+                  className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border text-center ${
                     isDark ? 'bg-[#18202e] border-[#243044]' : 'bg-[#f1f5f9] border-[#cbd5e1]'
                   }`}
                 >
-                  <div className={`text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
+                  <div className={`text-[9px] sm:text-[10px] font-mono uppercase font-bold ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                     {t.marginLabel}
                   </div>
                   <div
-                    className={`font-mono font-black text-base sm:text-lg mt-0.5 ${
+                    className={`font-mono font-black text-sm sm:text-lg mt-0.5 ${
                       margin >= 0
                         ? isDark ? 'text-[#34d399]' : 'text-[#059669]'
                         : isDark ? 'text-[#fb7185]' : 'text-[#e11d48]'
@@ -716,7 +753,7 @@ export function App() {
 
             {/* WHAT-IF SIMULATOR DECK */}
             <section
-              className={`anim-item p-4 sm:p-5 rounded-3xl border flex flex-col gap-3 ${
+              className={`anim-item p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border flex flex-col gap-2.5 sm:gap-3 ${
                 isDark
                   ? 'bg-[#111722] border-[#1d2738] neo-box-dark'
                   : 'bg-white border-[#0f172a] neo-box-light'
@@ -731,7 +768,7 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => simulateImpact('miss')}
-                  className={`py-2.5 px-3 rounded-xl border text-xs font-bold font-mono transition-all active:scale-95 ${
+                  className={`py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl border text-xs font-bold font-mono transition-all active:scale-95 ${
                     isDark
                       ? 'bg-[#18202e] border-[#243044] text-[#f8fafc] hover:border-[#ff5722]'
                       : 'bg-[#f1f5f9] border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white'
@@ -742,7 +779,7 @@ export function App() {
                 <button
                   type="button"
                   onClick={() => simulateImpact('attend')}
-                  className={`py-2.5 px-3 rounded-xl border text-xs font-bold font-mono transition-all active:scale-95 ${
+                  className={`py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl border text-xs font-bold font-mono transition-all active:scale-95 ${
                     isDark
                       ? 'bg-[#18202e] border-[#243044] text-[#f8fafc] hover:border-[#10b981]'
                       : 'bg-[#f1f5f9] border-[#0f172a] text-[#0f172a] hover:bg-[#10b981] hover:text-white'
@@ -753,13 +790,13 @@ export function App() {
               </div>
 
               <div
-                className={`px-4 py-3 rounded-2xl border text-xs flex items-center justify-between ${
+                className={`px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border text-xs flex items-center justify-between ${
                   isDark
                     ? 'bg-[#080b10] border-[#1d2738]'
                     : 'bg-[#f8fafc] border-[#cbd5e1]'
                 }`}
               >
-                <span className={`font-semibold ${isDark ? 'text-[#cbd5e1]' : 'text-[#334155]'}`}>
+                <span className={`font-semibold text-[11px] sm:text-xs ${isDark ? 'text-[#cbd5e1]' : 'text-[#334155]'}`}>
                   {simDiff ? simDiff.label : t.simDefaultPrompt}
                 </span>
                 <span
@@ -782,7 +819,7 @@ export function App() {
         {/* TAB 2: COURSE ROSTER */}
         {tab === 'roster' && (
           <section
-            className={`p-5 rounded-3xl border flex flex-col gap-4 ${
+            className={`p-4 sm:p-5 rounded-2xl sm:rounded-3xl border flex flex-col gap-3.5 sm:gap-4 ${
               isDark
                 ? 'bg-[#111722] border-[#1d2738] neo-box-dark'
                 : 'bg-white border-[#0f172a] neo-box-light'
@@ -815,7 +852,7 @@ export function App() {
                 return (
                   <div
                     key={s.id}
-                    className={`p-4 rounded-2xl border flex flex-col gap-3.5 ${
+                    className={`p-3.5 rounded-xl sm:rounded-2xl border flex flex-col gap-3 ${
                       isDark
                         ? 'bg-[#18202e] border-[#243044]'
                         : 'bg-[#f1f5f9] border-[#cbd5e1]'
@@ -826,7 +863,7 @@ export function App() {
                         type="text"
                         value={s.name}
                         onChange={e => updateSubject(s.id, 'name', e.target.value)}
-                        className={`flex-1 text-xs font-bold px-3 py-2 rounded-xl border outline-none ${
+                        className={`flex-1 text-xs font-bold px-3 py-1.5 sm:py-2 rounded-xl border outline-none ${
                           isDark
                             ? 'bg-[#111722] border-[#243044] text-white focus:border-[#ff5722]'
                             : 'bg-white border-[#0f172a] text-[#0f172a]'
@@ -835,22 +872,22 @@ export function App() {
                       <button
                         type="button"
                         onClick={() => deleteSubject(s.id)}
-                        className="text-[#f43f5e] hover:bg-[#f43f5e]/10 p-2 rounded-xl transition-colors"
+                        className="text-[#f43f5e] hover:bg-[#f43f5e]/10 p-1.5 sm:p-2 rounded-xl transition-colors"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={15} />
                       </button>
                     </div>
 
-                    {/* TACTILE COUNTER CELLS WITH HIGH CONTRAST */}
-                    <div className="grid grid-cols-3 gap-2">
+                    {/* TACTILE + DIRECT TYPEABLE COUNTER CELLS */}
+                    <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
                       
                       {/* HELD COUNTER */}
                       <div className="flex flex-col gap-1">
-                        <span className={`text-[10px] font-mono font-bold text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
+                        <span className={`text-[9px] sm:text-[10px] font-mono font-bold text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                           Held
                         </span>
                         <div
-                          className={`flex items-center justify-between rounded-xl border p-1 ${
+                          className={`flex items-center justify-between rounded-xl border p-0.5 sm:p-1 ${
                             isDark
                               ? 'bg-[#111722] border-[#243044]'
                               : 'bg-white border-[#0f172a]'
@@ -859,30 +896,34 @@ export function App() {
                           <button
                             type="button"
                             onClick={() => stepSubject(s.id, 'held', -1)}
-                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                            className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
                           >
-                            <Minus size={12} />
+                            <Minus size={11} />
                           </button>
-                          <span className="font-mono font-black text-xs px-1 text-center">
-                            {sHeld}
-                          </span>
+                          <input
+                            type="number"
+                            value={sHeld}
+                            min="1"
+                            onChange={e => updateSubject(s.id, 'held', parseInt(e.target.value, 10) || 1)}
+                            className="w-8 sm:w-10 text-center font-mono font-black text-xs bg-transparent outline-none"
+                          />
                           <button
                             type="button"
                             onClick={() => stepSubject(s.id, 'held', 1)}
-                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                            className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
                           >
-                            <Plus size={12} />
+                            <Plus size={11} />
                           </button>
                         </div>
                       </div>
 
                       {/* ATTENDED COUNTER */}
                       <div className="flex flex-col gap-1">
-                        <span className={`text-[10px] font-mono font-bold text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
+                        <span className={`text-[9px] sm:text-[10px] font-mono font-bold text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                           Attended
                         </span>
                         <div
-                          className={`flex items-center justify-between rounded-xl border p-1 ${
+                          className={`flex items-center justify-between rounded-xl border p-0.5 sm:p-1 ${
                             isDark
                               ? 'bg-[#111722] border-[#243044]'
                               : 'bg-white border-[#0f172a]'
@@ -891,30 +932,34 @@ export function App() {
                           <button
                             type="button"
                             onClick={() => stepSubject(s.id, 'attended', -1)}
-                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                            className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
                           >
-                            <Minus size={12} />
+                            <Minus size={11} />
                           </button>
-                          <span className="font-mono font-black text-xs px-1 text-center">
-                            {sAttended}
-                          </span>
+                          <input
+                            type="number"
+                            value={sAttended}
+                            min="0"
+                            onChange={e => updateSubject(s.id, 'attended', parseInt(e.target.value, 10) || 0)}
+                            className="w-8 sm:w-10 text-center font-mono font-black text-xs bg-transparent outline-none"
+                          />
                           <button
                             type="button"
                             onClick={() => stepSubject(s.id, 'attended', 1)}
-                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                            className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
                           >
-                            <Plus size={12} />
+                            <Plus size={11} />
                           </button>
                         </div>
                       </div>
 
                       {/* TARGET % COUNTER */}
                       <div className="flex flex-col gap-1">
-                        <span className={`text-[10px] font-mono font-bold text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
+                        <span className={`text-[9px] sm:text-[10px] font-mono font-bold text-center ${isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}`}>
                           Target %
                         </span>
                         <div
-                          className={`flex items-center justify-between rounded-xl border p-1 ${
+                          className={`flex items-center justify-between rounded-xl border p-0.5 sm:p-1 ${
                             isDark
                               ? 'bg-[#111722] border-[#243044]'
                               : 'bg-white border-[#0f172a]'
@@ -923,19 +968,19 @@ export function App() {
                           <button
                             type="button"
                             onClick={() => stepSubject(s.id, 'threshold', -5)}
-                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                            className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
                           >
-                            <Minus size={12} />
+                            <Minus size={11} />
                           </button>
-                          <span className="font-mono font-black text-xs px-1 text-center text-[#ff5722]">
+                          <span className="font-mono font-black text-xs px-0.5 text-center text-[#ff5722]">
                             {sThreshold}%
                           </span>
                           <button
                             type="button"
                             onClick={() => stepSubject(s.id, 'threshold', 5)}
-                            className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
+                            className="w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-lg hover:bg-[#ff5722] hover:text-white transition-colors active:scale-90"
                           >
-                            <Plus size={12} />
+                            <Plus size={11} />
                           </button>
                         </div>
                       </div>
@@ -964,7 +1009,7 @@ export function App() {
             <button
               type="button"
               onClick={addSubject}
-              className={`w-full py-3 rounded-2xl border-2 border-dashed font-brand font-black text-xs uppercase tracking-wider transition-all active:scale-[0.98] ${
+              className={`w-full py-2.5 sm:py-3 rounded-xl sm:rounded-2xl border-2 border-dashed font-brand font-black text-xs uppercase tracking-wider transition-all active:scale-[0.98] ${
                 isDark
                   ? 'border-[#ff5722] text-[#ff5722] hover:bg-[#ff5722]/10'
                   : 'border-[#0f172a] text-[#0f172a] hover:bg-[#ff5722] hover:text-white hover:border-[#ff5722]'
@@ -980,37 +1025,37 @@ export function App() {
           <button
             type="button"
             onClick={resetAll}
-            className={`py-3 px-4 rounded-2xl border font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 active:scale-95 ${
+            className={`py-2.5 px-3 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl border font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 active:scale-95 ${
               isDark
                 ? 'bg-[#111722] border-[#1d2738] text-[#cbd5e1] hover:text-white'
                 : 'bg-white border-[#0f172a] text-[#0f172a] hover:bg-[#f1f5f9]'
             }`}
           >
-            <RotateCcw size={14} />
+            <RotateCcw size={13} />
             <span>{t.resetBtn}</span>
           </button>
           <button
             type="button"
             onClick={copySnapshot}
-            className={`flex-1 py-3 px-4 rounded-2xl border font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:scale-95 ${
+            className={`flex-1 py-2.5 px-3 sm:py-3 sm:px-4 rounded-xl sm:rounded-2xl border font-brand font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 active:scale-95 ${
               isDark
                 ? 'bg-[#ff5722] border-[#ff784e] text-white neo-box-dark'
                 : 'bg-[#ff5722] border-[#0f172a] text-white neo-box-sm-light'
             }`}
           >
-            {copied ? <Check size={14} /> : <Copy size={14} />}
+            {copied ? <Check size={13} /> : <Copy size={13} />}
             <span>{copied ? "Copied" : t.copyBtn}</span>
           </button>
         </div>
 
-        {/* DESKTOP FOOTER & SHORTCUT BADGES */}
-        <footer className="anim-item flex items-center justify-between text-[11px] font-mono px-2 pt-2">
+        {/* DESKTOP/MOBILE FOOTER */}
+        <footer className="anim-item flex items-center justify-between text-[10px] sm:text-[11px] font-mono px-2 pt-1">
           <div className="flex items-center gap-1.5">
-            <ShieldCheck size={13} className="text-[#10b981]" />
+            <ShieldCheck size={12} className="text-[#10b981]" />
             <span className={isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}>100% Client-Side &amp; Private</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Zap size={13} className="text-[#ff5722]" />
+            <Zap size={12} className="text-[#ff5722]" />
             <span className={isDark ? 'text-[#94a3b8]' : 'text-[#475569]'}>bunkim v2.0</span>
           </div>
         </footer>
